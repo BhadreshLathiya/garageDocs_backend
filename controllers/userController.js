@@ -76,7 +76,7 @@ exports.userRegister = async (req, res) => {
       });
 
       if (userFind) {
-        console.log(userFind)
+        console.log(req.file)
         const user = await User.findByIdAndUpdate(userFind._id, {
           workShopName: userData.workShopName,
           ownerName: userData.ownerName,
@@ -92,7 +92,7 @@ exports.userRegister = async (req, res) => {
         res.status(200).json({
           success: true,
           message: "user register successfully",
-          data: newUser,
+          data: user,
         });
       } else {
         res.status(200).json({
