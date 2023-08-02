@@ -31,5 +31,8 @@ app.use(cors());
 
 app.use("/uploads", express.static("uploads"));
 app.use("/api/v1", user);
+app.get("/",async(req,res)=>{
+  res.send("helo")
+})
 
 app.listen(port, () => console.log(`App listening on port ${port}.`));
