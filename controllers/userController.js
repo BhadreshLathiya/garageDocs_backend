@@ -76,6 +76,7 @@ exports.userRegister = async (req, res) => {
       });
 
       if (userFind) {
+        console.log(userFind)
         const user = await User.findByIdAndUpdate(userFind._id, {
           workShopName: userData.workShopName,
           ownerName: userData.ownerName,
