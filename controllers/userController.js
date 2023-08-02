@@ -71,8 +71,8 @@ exports.userRegister = async (req, res) => {
       });
     } else {
       const userFind = await User.findOne({
-        mobileNo: mobileNo,
-        countryCode: countryCode,
+        mobileNo: userData.mobileNo,
+        countryCode: userData.countryCode,
       });
 
       if (userFind) {
