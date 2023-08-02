@@ -80,7 +80,7 @@ exports.userRegister = async (req, res) => {
           workShopName: userData.workShopName,
           ownerName: userData.ownerName,
           email: userData.email,
-          password: await bcrypt.hash(password, salt),
+          password: await bcrypt.hash(userData.password, salt),
           workShopAddress: userData.workShopAddress,
           isRegister: 1,
         });
