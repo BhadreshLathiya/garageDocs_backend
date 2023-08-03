@@ -10,6 +10,9 @@ exports.phoneNumberVerified = async (req, res) => {
     const otp = Math.floor(1000 + Math.random() * 9000).toString();
     if (userFind) {
       const user = await User.findByIdAndUpdate(userFind._id, { otp: 1111 }); // Use the generated OTP
+      token = user.getJWTToken();
+      user.token = token;
+      await user.save();
       res.status(200).json({
         success: true,
         message: "Otp Sent successfully",
@@ -76,7 +79,6 @@ exports.userRegister = async (req, res) => {
       });
 
       if (userFind) {
-        console.log(req.file)
         const user = await User.findByIdAndUpdate(userFind._id, {
           workShopName: userData.workShopName,
           ownerName: userData.ownerName,
@@ -89,10 +91,11 @@ exports.userRegister = async (req, res) => {
         token = user.getJWTToken();
         user.token = token;
         await user.save();
+        const newUser = await User.findById(userFind._id);
         res.status(200).json({
           success: true,
           message: "user register successfully",
-          data: user,
+          data: newUser,
         });
       } else {
         res.status(200).json({

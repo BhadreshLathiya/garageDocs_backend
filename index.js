@@ -9,6 +9,7 @@ const http = require("http");
 const app = express();
 const server = http.createServer(app);
 const user = require("./routers/userRouter");
+const service = require("./routers/serviceRouter");
 const port = process.env.PORT;
 mongoose.set("strictQuery", false);
 mongoose
@@ -31,8 +32,6 @@ app.use(cors());
 
 app.use("/uploads", express.static("uploads"));
 app.use("/api/v1", user);
-app.get("/",async(req,res)=>{
-  res.send("helo")
-})
+app.use("/api/v1", service);
 
 app.listen(port, () => console.log(`App listening on port ${port}.`));
