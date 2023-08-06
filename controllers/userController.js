@@ -211,15 +211,17 @@ exports.updateSingleUserDetail = async (req, res) => {
     if (req.file && req.body) {
       info = { ...req.body, image: req.file.path };
       let userData = await User.findById(id);
-      fs.unlink(userData.image, function (err) {
-        if (err && err.code == "ENOENT") {
-          console.info("File doesn't exist, won't remove it.");
-        } else if (err) {
-          console.error("Error occurred while trying to remove file");
-        } else {
-          console.info(`removed`);
-        }
-      });
+      if (userData.image) {
+        fs.unlink(userData.image, function (err) {
+          if (err && err.code == "ENOENT") {
+            console.info("File doesn't exist, won't remove it.");
+          } else if (err) {
+            console.error("Error occurred while trying to remove file");
+          } else {
+            console.info(`removed`);
+          }
+        });
+      }
       await User.findByIdAndUpdate(id, info, {
         new: true,
         runValidators: true,
