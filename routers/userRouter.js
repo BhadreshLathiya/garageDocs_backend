@@ -8,14 +8,22 @@ const {
   phoneNumberVerified,
   otpVerifiedUser,
   logOutUser,
+  loginWithGoogle,
+  loginWithFacebook,
+  simpleLogin,
+  verifyOtp,
+  resendOtp,
 } = require("../controllers/userController");
 const upload = require("../middelware/fileUpload");
 const { verifyToken } = require("../middelware/auth");
 const Router = express.Router();
 
-Router.get("/mobile_number_verified", phoneNumberVerified);
-Router.post("/otp_verified", otpVerifiedUser);
-Router.post("/add_user", upload.single("image"), userRegister);
+
+Router.post("/google_login",  loginWithGoogle);
+Router.post("/facebook_login",  loginWithFacebook);
+Router.post("/login",  simpleLogin);
+Router.post("/verify/otp",  verifyOtp);
+Router.post("/resend/otp",  resendOtp);
 Router.get("/get_single_detail/:id", verifyToken, getSingleUserDetail);
 Router.put(
   "/update_single_user/:id",

@@ -22,9 +22,7 @@ const userSchema = new mongoose.Schema({
   token: {
     type: String,
   },
-  countryCode: {
-    type: String,
-  },
+
   mobileNo: {
     type: String,
   },
@@ -32,14 +30,27 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
   deviceToken: {
-    type: Array,
+    type: String,
   },
-  otp: {
-    type: Number,
+  isExpire: {
+    type: Boolean,
+    default: false,
+  },
+  googleId: {
+    type: String,
+  },
+  facebookId: {
+    type: String,
+  },
+  isVerify: {
+    type: Boolean,
   },
   isRegister: {
     type: Number,
-    default: 0,
+    default:0
+  },
+  otp:{
+    type: Number,
   },
   resetPasswordToken: String,
   resetPasswordExpire: Date,

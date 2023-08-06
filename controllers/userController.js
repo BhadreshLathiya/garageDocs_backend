@@ -1,109 +1,187 @@
 const User = require("../models/userModel");
-const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const fs = require("fs");
+const sendEmail = require("../middelware/sendMail");
 
-exports.phoneNumberVerified = async (req, res) => {
+// user google login
+exports.loginWithGoogle = async (req, res) => {
   try {
-    const userFind = await User.findOne({
-      mobileNo: req.body.mobileNo,
-      countryCode: req.body.countryCode,
-    });
-    const otp = Math.floor(1000 + Math.random() * 9000).toString();
-    if (userFind) {
-      const user = await User.findByIdAndUpdate(userFind._id, { otp: 1111 }); // Use the generated OTP
-      token = user.getJWTToken();
-      user.token = token;
-      await user.save();
-      res.status(200).json({
+    const { ownerName, email, mobileNo, googleId, image, deviceToken } =
+      req.body;
+    const find = await User.findOne({ email: email });
+    if (find) {
+      res.status(200).send({
         success: true,
-        message: "Otp Sent successfully",
-        data: user,
+        message: "login successfully",
+        user: find,
       });
     } else {
+      const data = await User.create({
+        ownerName: ownerName,
+        email: email,
+        mobileNo: mobileNo,
+        image: image,
+        googleId: googleId,
+        deviceToken: deviceToken,
+        isVerify: true,
+      });
+      data.token = jwt.sign({ id: data._id }, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRE,
+      });
+      await data.save();
+      res.status(200).send({
+        success: true,
+        message: "user create successfully",
+        user: data,
+      });
+    }
+  } catch (error) {
+    res.status(400).send({
+      success: false,
+      message: "something went wrong",
+    });
+  }
+};
+
+// user facebook login
+exports.loginWithFacebook = async (req, res) => {
+  try {
+    const { ownerName, email, mobileNo, facebookId, image, deviceToken } =
+      req.body;
+    const find = await User.findOne({ email: email });
+    if (find) {
+      res.status(200).send({
+        success: true,
+        message: "login successfully",
+        user: find,
+      });
+    } else {
+      const data = await User.create({
+        ownerName: ownerName,
+        email: email,
+        mobileNo: mobileNo,
+        image: image,
+        facebookId: facebookId,
+        deviceToken: deviceToken,
+        isVerify: true,
+      });
+      data.token = jwt.sign({ id: data._id }, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRE,
+      });
+      await data.save();
+      res.status(200).send({
+        success: true,
+        message: "user create successfully",
+        user: data,
+      });
+    }
+  } catch (error) {
+    res.status(400).send({
+      success: false,
+      message: "something went wrong",
+    });
+  }
+};
+
+//simple login
+exports.simpleLogin = async (req, res) => {
+  try {
+    const data = await User.findOne({ email: req.body.email });
+    if (!data) {
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
       const user = await User.create({
-        mobileNo: req.body.mobileNo,
-        countryCode: req.body.countryCode,
-        otp: 1111,
-        // deviceToken: req.body.deviceToken,
+        email: req.body.email,
+        otp: otp,
+        isVerify: false,
       });
+      sendEmail(
+        req.body.email,
+        "Verify Your OTP",
+        `your otp is ${otp} Do not share it`
+      );
       res.status(200).json({
         success: true,
-        message: "Otp Sent successfully",
-        data: user,
-      });
-    }
-  } catch (error) {
-    console.log(error);
-    res.status(400).send("Something went wrong.");
-  }
-};
-
-exports.otpVerifiedUser = async (req, res) => {
-  try {
-    const userFind = await User.findOne({
-      mobileNo: req.body.mobileNo,
-      countryCode: req.body.countryCode,
-      otp: req.body.otp,
-    });
-
-    if (userFind) {
-      res.status(200).json({
-        success: true,
-        message: "Otp Verified.",
-        data: userFind,
+        message: `email send successfully to ${req.body.email}`,
       });
     } else {
-      res.status(200).json({
-        message: "Invalid OTP",
-      });
-    }
-  } catch (error) {
-    console.log(error);
-    res.status(400).send("Something went wrong.");
-  }
-};
-
-exports.userRegister = async (req, res) => {
-  const salt = await bcrypt.genSalt(10);
-  try {
-    const userData = req.body;
-    let emailCheck = await User.findOne({ email: userData.email });
-    if (emailCheck) {
-      return res.status(200).json({
+      res.status(400).json({
         success: false,
-        message: "User exists with this E-mail.",
+        message: "user already exist",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("Somthing went wrong.");
+  }
+};
+
+// verify otp
+exports.verifyOtp = async (req, res) => {
+  try {
+    const data = await User.findOne({ email: req.body.email });
+    if (data.isVerify) {
+      res.status(200).json({
+        success: true,
+        message: `you are already verify please login`,
       });
     } else {
-      const userFind = await User.findOne({
-        mobileNo: userData.mobileNo,
-        countryCode: userData.countryCode,
-      });
-
-      if (userFind) {
-        const user = await User.findByIdAndUpdate(userFind._id, {
-          workShopName: userData.workShopName,
-          ownerName: userData.ownerName,
-          email: userData.email,
-          password: await bcrypt.hash(userData.password, salt),
-          workShopAddress: userData.workShopAddress,
-          isRegister: 1,
-        });
-        if (req.file) user.image = req.file.path;
-        token = user.getJWTToken();
-        user.token = token;
-        await user.save();
-        const newUser = await User.findById(userFind._id);
-        res.status(200).json({
-          success: true,
-          message: "user register successfully",
-          data: newUser,
-        });
+      const date1 = new Date(data.updatedAt); // Replace with your desired date and time
+      const date2 = new Date();
+      const timeDifference = date2.getTime() - date1.getTime();
+      const fiveMinutesInMilliseconds = 5 * 60 * 1000;
+      console.log(timeDifference);
+      console.log(fiveMinutesInMilliseconds);
+      if (timeDifference < fiveMinutesInMilliseconds) {
+        if (data.otp === req.body.otp) {
+          data.isVerify = true;
+          data.otp = null;
+          await data.save();
+          res.status(200).json({
+            success: true,
+            data: data,
+            message: `login successfully`,
+          });
+        } else {
+          res.status(400).json({
+            success: false,
+            message: `invalid otp`,
+          });
+        }
       } else {
-        res.status(200).json({
-          success: true,
-          message: "User not register this number.",
-          data: [],
+        res.status(400).json({
+          success: false,
+          message: `otp expire`,
         });
       }
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("Somthing went wrong.");
+  }
+};
+
+//resend otp
+exports.resendOtp = async (req, res) => {
+  try {
+    const data = await User.findOne({ email: req.body.email });
+    if (!data) {
+      res.status(400).json({
+        success: false,
+        message: "user not found",
+      });
+    } else {
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      data.otp = otp;
+      await data.save();
+      sendEmail(
+        req.body.email,
+        "Verify Your OTP",
+        `your otp is ${otp} Do not share it`
+      );
+      res.status(200).json({
+        success: true,
+        message: `email send successfully to ${req.body.email}`,
+      });
     }
   } catch (error) {
     console.log(error);
@@ -115,21 +193,6 @@ exports.getSingleUserDetail = async (req, res) => {
   try {
     const id = req.params.id;
     const data = await User.findById(id);
-    res.status(200).json({
-      success: true,
-      message: "user Detail get successfully",
-      data: data,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(400).send("Somthing went wrong.");
-  }
-};
-
-exports.getSingleUserDetail = async (req, res) => {
-  try {
-    const id = req.params.id;
-    const data = await User.findById(id).populate("familyId");
     res.status(200).json({
       success: true,
       message: "user Detail get successfully",
@@ -255,7 +318,7 @@ exports.logOutUser = async (req, res) => {
   try {
     const id = req.params.id;
     const data = await User.findById(id);
-    data.token = null;
+    data.deviceToken = null;
     await data.save();
     res.status(200).json({
       success: true,
