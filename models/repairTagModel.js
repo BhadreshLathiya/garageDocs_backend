@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
-const serviceSchema = new mongoose.Schema({
-  serviceName: {
+const repairTagSchema = new mongoose.Schema({
+  repairTagName: {
     type: String,
   },
   userId: {
@@ -12,5 +12,5 @@ const serviceSchema = new mongoose.Schema({
     type:Number
   }
 });
-serviceSchema.set("timestamps", true);
-module.exports = mongoose.model("Service", serviceSchema);
+repairTagSchema.set("timestamps", true);
+module.exports = mongoose.model("repairTag", repairTagSchema);

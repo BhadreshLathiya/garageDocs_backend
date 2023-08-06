@@ -6,6 +6,7 @@ const {
   getSingleServiceDetailforsingleUser,
   updateSingleServiceDetailforsingleUser,
   deleteSingleServiceDetailforsingleUser,
+  serviceSearch,
 } = require("../controllers/serviceController");
 const Router = express.Router();
 
@@ -34,6 +35,11 @@ Router.delete(
   "/delete_single_service_detail_for_single_user/:id",
   verifyToken,
   deleteSingleServiceDetailforsingleUser
+);
+Router.get(
+  "/search_service_form_single_user/:id",
+  verifyToken,
+  serviceSearch
 );
 
 module.exports = Router;
