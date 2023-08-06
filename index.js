@@ -11,6 +11,8 @@ const server = http.createServer(app);
 const user = require("./routers/userRouter");
 const service = require("./routers/serviceRouter");
 const admin = require("./routers/adminRouter");
+const setting = require("./routers/settingRouter");
+const sendEmail = require("./middelware/sendMail");
 const port = process.env.PORT;
 mongoose.set("strictQuery", false);
 mongoose
@@ -19,6 +21,7 @@ mongoose
     useUnifiedTopology: true,
     useCreateIndex: true,
     useFindAndModify: false,
+    poolSize: 200,
   })
   .then(() => {
     console.log("Connection Successfully ✌");
@@ -35,5 +38,6 @@ app.use("/uploads", express.static("uploads"));
 app.use("/api/v1", user);
 app.use("/api/v1", service);
 app.use("/api/v1", admin);
+app.use("/api/v1", setting);
 
 app.listen(port, () => console.log(`App listening on port ${port}.`));
