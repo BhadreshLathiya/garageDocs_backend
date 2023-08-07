@@ -120,6 +120,7 @@ const invoiceSchema = new mongoose.Schema({
   },
   status: {
     type: String,
+    default:"created"
   },
   totalPayment: {
     type: Number,
