@@ -104,10 +104,32 @@ exports.simpleLogin = async (req, res) => {
         message: `email send successfully to ${req.body.email}`,
       });
     } else {
-      res.status(400).json({
-        success: false,
-        message: "user already exist",
-      });
+      const data = await User.findOne({ email: req.body.email });
+      if (data.isVerify) {
+        res.status(400).json({
+          success: false,
+          message: "user already exist",
+        });
+      } else {
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        const user = await User.findByIdAndUpdate(
+          data._id,
+          {
+            otp: otp,
+            isVerify: false,
+          },
+          { new: true }
+        );
+        sendEmail(
+          req.body.email,
+          "Verify Your OTP",
+          `your otp is ${otp} Do not share it`
+        );
+        res.status(200).json({
+          success: true,
+          message: `email send successfully to ${req.body.email}`,
+        });
+      }
     }
   } catch (error) {
     console.log(error);
@@ -129,8 +151,6 @@ exports.verifyOtp = async (req, res) => {
       const date2 = new Date();
       const timeDifference = date2.getTime() - date1.getTime();
       const fiveMinutesInMilliseconds = 5 * 60 * 1000;
-      console.log(timeDifference);
-      console.log(fiveMinutesInMilliseconds);
       if (timeDifference < fiveMinutesInMilliseconds) {
         if (data.otp === req.body.otp) {
           data.isVerify = true;
