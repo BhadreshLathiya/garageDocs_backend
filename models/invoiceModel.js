@@ -3,10 +3,7 @@ const mongoose = require("mongoose");
 const invoiceSchema = new mongoose.Schema({
   mobileNo: {
     type: String,
-  },
-  countryCode: {
-    type: String,
-  },
+  }, 
   name: {
     type: String,
   },
