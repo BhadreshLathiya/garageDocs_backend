@@ -32,6 +32,9 @@ const userSchema = new mongoose.Schema({
   deviceToken: {
     type: String,
   },
+  garageType: {
+    type: String,
+  },
   isExpire: {
     type: Boolean,
     default: false,
