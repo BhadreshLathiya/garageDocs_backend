@@ -6,7 +6,7 @@ const sendEmail = require("../middelware/sendMail");
 // user google login
 exports.loginWithGoogle = async (req, res) => {
   try {
-    const { ownerName, email, mobileNo, googleId, image, deviceToken } =
+    const { ownerName, garageType, email, mobileNo, googleId, image, deviceToken } =
       req.body;
     const find = await User.findOne({ email: email });
     if (find) {
@@ -24,6 +24,7 @@ exports.loginWithGoogle = async (req, res) => {
         googleId: googleId,
         deviceToken: deviceToken,
         isVerify: true,
+        garageType:garageType
       });
       data.token = jwt.sign({ id: data._id }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRE,
@@ -46,7 +47,7 @@ exports.loginWithGoogle = async (req, res) => {
 // user facebook login
 exports.loginWithFacebook = async (req, res) => {
   try {
-    const { ownerName, email, mobileNo, facebookId, image, deviceToken } =
+    const { ownerName,garageType, email, mobileNo, facebookId, image, deviceToken } =
       req.body;
     const find = await User.findOne({ email: email });
     if (find) {
@@ -64,6 +65,7 @@ exports.loginWithFacebook = async (req, res) => {
         facebookId: facebookId,
         deviceToken: deviceToken,
         isVerify: true,
+        garageType:garageType
       });
       data.token = jwt.sign({ id: data._id }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRE,
