@@ -10,9 +10,6 @@ const invoiceSchema = new mongoose.Schema({
   email: {
     type: String,
   },
-  taxNumber: {
-    type: String,
-  },
   address: {
     type: String,
   },
@@ -120,7 +117,7 @@ const invoiceSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    default:"created"
+    default:"create"
   },
   totalPayment: {
     type: Number,

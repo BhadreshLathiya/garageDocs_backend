@@ -12,6 +12,7 @@ const user = require("./routers/userRouter");
 const service = require("./routers/serviceRouter");
 const admin = require("./routers/adminRouter");
 const setting = require("./routers/settingRouter");
+const invoice = require("./routers/invoiceRouter");
 const sendEmail = require("./middelware/sendMail");
 const port = process.env.PORT;
 mongoose.set("strictQuery", false);
@@ -39,5 +40,6 @@ app.use("/api/v1", user);
 app.use("/api/v1", service);
 app.use("/api/v1", admin);
 app.use("/api/v1", setting);
+app.use("/api/v1", invoice);
 
 app.listen(port, () => console.log(`App listening on port ${port}.`));
