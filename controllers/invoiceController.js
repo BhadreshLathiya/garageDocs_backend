@@ -53,67 +53,6 @@ exports.deleteSingleInvoiceDetail = async (req, res) => {
   }
 };
 
-// exports.updateInvoice = async (req, res) => {
-//   try {
-//     const id = req.params.id;
-//     await Invoice.findByIdAndUpdate(
-//       id,
-//       {
-//         $push: {
-//           services: {
-//             serviceName: req.body.serviceName,
-//             price: req.body.price,
-//             tax: req.body.tax,
-//             Quantity: req.body.Quantity,
-//             discount: req.body.discount,
-//             total: req.body.total,
-//           },
-//           spareParts: {
-//             partsName: req.body.partsName,
-//             price: req.body.price,
-//             tax: req.body.tax,
-//             Quantity: req.body.Quantity,
-//             discount: req.body.discount,
-//             total: req.body.total,
-//           },
-//           selectPackage: {
-//             packageName: req.body.packageName,
-//             price: req.body.price,
-//             tax: req.body.tax,
-//             Quantity: req.body.Quantity,
-//             discount: req.body.discount,
-//             total: req.body.total,
-//           },
-//         },
-//         vehicleType: req.body.vehicleType,
-//         vehicleCompany: req.body.vehicleCompany,
-//         vehicleModel: req.body.vehicleModel,
-//         kilometer: req.body.kilometer,
-//         fuelType: req.body.fuelType,
-//         fuelIndicator: req.body.fuelIndicator,
-//         repiarTag: req.body.repiarTags,
-//         isGst: req.body.isGst,
-//         gstNo: req.body.gstNo,
-//         status: req.body.status,
-//         totalPayment: req.body.totalPayment,
-//         receivePayment: req.body.receivePayment,
-//         duePayment: req.body.duePayment,
-//         isPaymentStatus: req.body.isPaymentStatus,
-//       },
-//       { new: true }
-//     );
-//     const invoice = await Invoice.findById(id);
-//     res.status(200).json({
-//       success: true,
-//       message: "invoice update successfully.",
-//       data: invoice,
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(400).send("Somthing went wrong.");
-//   }
-// };
-
 exports.updateInvoice = async (req, res) => {
   try {
     const id = req.params.id;
@@ -216,38 +155,70 @@ exports.updateInvoice = async (req, res) => {
       invoiceData.selectPackageId
     ) {
       if (invoiceData.serviceId) {
-        const query = {
-          // Add appropriate conditions to identify the document containing the service
-          _id: "64d26ef004a871385c9a4381", // Example document ID
-          "services._id": invoiceData.serviceId,
-        };
-        const update = {
-          $set: {
-            "services.name": "oiling",
+        const invoice = Invoice.updateOne(
+          { "services._id": invoiceData.serviceId },
+          {
+            $set: {
+              "services.$.serivceName": invoiceData.serviceName,
+              "services.$.price": invoiceData.price,
+              "services.$.tax": invoiceData.tax,
+              "services.$.Quantity": invoiceData.Quantity,
+              "services.$.discount": invoiceData.discount,
+              "services.$.total": invoiceData.total,
+            },
           },
-        };
-        // const updateServiceID = await Invoice.findOne({
-        //   "services._id": invoiceData.serviceId,
-        // });
-        // console.log(updateServiceID);
-        // id,
-        // {
-        //   $push: {
-        //     services: {
-        //       serviceName: invoiceData.services[i].serviceName,
-        //       price: invoiceData.services[i].price,
-        //       tax: invoiceData.services[i].tax,
-        //       Quantity: invoiceData.services[i].Quantity,
-        //       discount: invoiceData.services[i].discount,
-        //       total: invoiceData.services[i].total,
-        //     },
-        //   },
-        // },
-        // {
-        //   new: true,
-        //   runValidators: true,
-        //   userFindAndModify: false,
-        // }
+
+          { new: true, runValidators: true, userFindAndModify: false }
+        );
+
+        res.status(200).json({
+          success: true,
+          message: "invoice update successfully.",
+          data: invoice,
+        });
+      }
+
+      if (invoiceData.sparePartsId) {
+        const invoice = Invoice.updateOne(
+          { "spareParts._id": invoiceData.sparePartsId },
+          {
+            $set: {
+              "spareParts.$.partsName": invoiceData.partsName,
+              "spareParts.$.price": invoiceData.price,
+              "spareParts.$.tax": invoiceData.tax,
+              "spareParts.$.Quantity": invoiceData.Quantity,
+              "spareParts.$.discount": invoiceData.discount,
+              "spareParts.$.total": invoiceData.total,
+            },
+          },
+
+          { new: true, runValidators: true, userFindAndModify: false }
+        );
+
+        res.status(200).json({
+          success: true,
+          message: "invoice update successfully.",
+          data: invoice,
+        });
+      }
+
+      if (invoiceData.selectPackage) {
+        const invoice = Invoice.updateOne(
+          { "selectPackage._id": invoiceData.selectPackage },
+          {
+            $set: {
+              "selectPackage.$.packageName": invoiceData.packageName,
+              "selectPackage.$.price": invoiceData.price,
+              "selectPackage.$.tax": invoiceData.tax,
+              "selectPackage.$.Quantity": invoiceData.Quantity,
+              "selectPackage.$.discount": invoiceData.discount,
+              "selectPackage.$.total": invoiceData.total,
+            },
+          },
+
+          { new: true, runValidators: true, userFindAndModify: false }
+        );
+
         res.status(200).json({
           success: true,
           message: "invoice update successfully.",
