@@ -27,7 +27,7 @@ Router.post("/resend/otp",  resendOtp);
 Router.get("/get_single_detail/:id", verifyToken, getSingleUserDetail);
 Router.put(
   "/update_single_user/:id",
-  upload.single("image"),
+  upload.fields([{ name: "image" }, { name: "image2" }]),
   verifyToken,
   updateSingleUserDetail
 );
