@@ -50,9 +50,12 @@ const userSchema = new mongoose.Schema({
   },
   isRegister: {
     type: Number,
-    default:0
+    default: 0,
   },
-  otp:{
+  signature: {
+    type: String,
+  },
+  otp: {
     type: Number,
   },
   resetPasswordToken: String,
