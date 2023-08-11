@@ -53,195 +53,280 @@ exports.deleteSingleInvoiceDetail = async (req, res) => {
   }
 };
 
+// exports.updateInvoice = async (req, res) => {
+//   try {
+//     const id = req.params.id;
+//     const invoiceData = req.body;
+//     if (
+//       invoiceData.services ||
+//       invoiceData.spareParts ||
+//       invoiceData.selectPackage
+//     ) {
+//       if (invoiceData.services) {
+//         for (let i = 0; i < invoiceData.services.length; i++) {
+//           var invoice = await Invoice.findByIdAndUpdate(
+//             id,
+//             {
+//               $push: {
+//                 services: {
+//                   serviceName: invoiceData.services[i].serviceName,
+//                   price: invoiceData.services[i].price,
+//                   tax: invoiceData.services[i].tax,
+//                   Quantity: invoiceData.services[i].Quantity,
+//                   discount: invoiceData.services[i].discount,
+//                   total: invoiceData.services[i].total,
+//                 },
+//               },
+//             },
+//             {
+//               new: true,
+//               runValidators: true,
+//               userFindAndModify: false,
+//             }
+//           );
+//         }
+//         res.status(200).json({
+//           success: true,
+//           message: "invoice update successfully.",
+//           data: invoice,
+//         });
+//       }
+//       if (invoiceData.spareParts) {
+//         for (let i = 0; i < invoiceData.spareParts.length; i++) {
+//           var invoice = await Invoice.findByIdAndUpdate(
+//             id,
+//             {
+//               $push: {
+//                 spareParts: {
+//                   partsName: invoiceData.spareParts[i].partsName,
+//                   price: invoiceData.spareParts[i].price,
+//                   tax: invoiceData.spareParts[i].tax,
+//                   Quantity: invoiceData.spareParts[i].Quantity,
+//                   discount: invoiceData.spareParts[i].discount,
+//                   total: invoiceData.spareParts[i].total,
+//                 },
+//               },
+//             },
+//             {
+//               new: true,
+//               runValidators: true,
+//               userFindAndModify: false,
+//             }
+//           );
+//         }
+//         res.status(200).json({
+//           success: true,
+//           message: "invoice update successfully.",
+//           data: invoice,
+//         });
+//       }
+//       if (invoiceData.selectPackage) {
+//         for (let i = 0; i < invoiceData.selectPackage.length; i++) {
+//           var invoice = await Invoice.findByIdAndUpdate(
+//             id,
+//             {
+//               $push: {
+//                 selectPackage: {
+//                   packageName: invoiceData.selectPackage[i].packageName,
+//                   price: invoiceData.selectPackage[i].price,
+//                   tax: invoiceData.selectPackage[i].tax,
+//                   Quantity: invoiceData.selectPackage[i].Quantity,
+//                   discount: invoiceData.selectPackage[i].discount,
+//                   total: invoiceData.selectPackage[i].total,
+//                 },
+//               },
+//             },
+//             {
+//               new: true,
+//               runValidators: true,
+//               userFindAndModify: false,
+//             }
+//           );
+//         }
+//         res.status(200).json({
+//           success: true,
+//           message: "invoice update successfully.",
+//           data: invoice,
+//         });
+//       }
+//     } else if (
+//       invoiceData.serviceId ||
+//       invoiceData.sparePartsId ||
+//       invoiceData.selectPackageId
+//     ) {
+//       if (invoiceData.serviceId) {
+//         const invoice = Invoice.updateOne(
+//           { "services._id": invoiceData.serviceId },
+//           {
+//             $set: {
+//               "services.$.serivceName": invoiceData.serviceName,
+//               "services.$.price": invoiceData.price,
+//               "services.$.tax": invoiceData.tax,
+//               "services.$.Quantity": invoiceData.Quantity,
+//               "services.$.discount": invoiceData.discount,
+//               "services.$.total": invoiceData.total,
+//             },
+//           },
+
+//           { new: true, runValidators: true, userFindAndModify: false }
+//         );
+
+//         res.status(200).json({
+//           success: true,
+//           message: "invoice update successfully.",
+//           data: invoice,
+//         });
+//       }
+
+//       if (invoiceData.sparePartsId) {
+//         const invoice = Invoice.updateOne(
+//           { "spareParts._id": invoiceData.sparePartsId },
+//           {
+//             $set: {
+//               "spareParts.$.partsName": invoiceData.partsName,
+//               "spareParts.$.price": invoiceData.price,
+//               "spareParts.$.tax": invoiceData.tax,
+//               "spareParts.$.Quantity": invoiceData.Quantity,
+//               "spareParts.$.discount": invoiceData.discount,
+//               "spareParts.$.total": invoiceData.total,
+//             },
+//           },
+
+//           { new: true, runValidators: true, userFindAndModify: false }
+//         );
+
+//         res.status(200).json({
+//           success: true,
+//           message: "invoice update successfully.",
+//           data: invoice,
+//         });
+//       }
+
+//       if (invoiceData.selectPackageId) {
+//         const invoice = Invoice.updateOne(
+//           { "selectPackage._id": invoiceData.selectPackageId },
+//           {
+//             $set: {
+//               "selectPackage.$.packageName": invoiceData.packageName,
+//               "selectPackage.$.price": invoiceData.price,
+//               "selectPackage.$.tax": invoiceData.tax,
+//               "selectPackage.$.Quantity": invoiceData.Quantity,
+//               "selectPackage.$.discount": invoiceData.discount,
+//               "selectPackage.$.total": invoiceData.total,
+//             },
+//           },
+
+//           { new: true, runValidators: true, userFindAndModify: false }
+//         );
+
+//         res.status(200).json({
+//           success: true,
+//           message: "invoice update successfully.",
+//           data: invoice,
+//         });
+//       }
+//     } else {
+//       const invoice = await Invoice.findByIdAndUpdate(id, invoiceData, {
+//         new: true,
+//         runValidators: true,
+//         userFindAndModify: false,
+//       });
+//       res.status(200).json({
+//         success: true,
+//         message: "invoice update successfully.",
+//         data: invoice,
+//       });
+//     }
+//   } catch (error) {
+//     console.log(error);
+//     res.status(400).send("Somthing went wrong.");
+//   }
+// };
+
+
+
 exports.updateInvoice = async (req, res) => {
   try {
     const id = req.params.id;
     const invoiceData = req.body;
+
     if (
       invoiceData.services ||
       invoiceData.spareParts ||
       invoiceData.selectPackage
     ) {
-      if (invoiceData.services) {
-        for (let i = 0; i < invoiceData.services.length; i++) {
-          var invoice = await Invoice.findByIdAndUpdate(
-            id,
-            {
-              $push: {
-                services: {
-                  serviceName: invoiceData.services[i].serviceName,
-                  price: invoiceData.services[i].price,
-                  tax: invoiceData.services[i].tax,
-                  Quantity: invoiceData.services[i].Quantity,
-                  discount: invoiceData.services[i].discount,
-                  total: invoiceData.services[i].total,
-                },
-              },
-            },
-            {
-              new: true,
-              runValidators: true,
-              userFindAndModify: false,
-            }
-          );
+      for (const itemType of ['services', 'spareParts', 'selectPackage']) {
+        if (invoiceData[itemType]) {
+          for (const item of invoiceData[itemType]) {
+            const itemId = mongoose.Types.ObjectId(item._id);
+            delete item._id; // Remove _id to avoid circular reference
+            await Invoice.updateOne(
+              { _id: id },
+              { $push: { [itemType]: { $each: [{ _id: itemId, ...item }] } } }
+            );
+          }
         }
-        res.status(200).json({
-          success: true,
-          message: "invoice update successfully.",
-          data: invoice,
-        });
       }
-      if (invoiceData.spareParts) {
-        for (let i = 0; i < invoiceData.spareParts.length; i++) {
-          var invoice = await Invoice.findByIdAndUpdate(
-            id,
-            {
-              $push: {
-                services: {
-                  serviceName: invoiceData.spareParts[i].serviceName,
-                  price: invoiceData.spareParts[i].price,
-                  tax: invoiceData.spareParts[i].tax,
-                  Quantity: invoiceData.spareParts[i].Quantity,
-                  discount: invoiceData.spareParts[i].discount,
-                  total: invoiceData.spareParts[i].total,
-                },
-              },
-            },
-            {
-              new: true,
-              runValidators: true,
-              userFindAndModify: false,
-            }
-          );
-        }
-        res.status(200).json({
-          success: true,
-          message: "invoice update successfully.",
-          data: invoice,
-        });
-      }
-      if (invoiceData.selectPackage) {
-        for (let i = 0; i < invoiceData.selectPackage.length; i++) {
-          var invoice = await Invoice.findByIdAndUpdate(
-            id,
-            {
-              $push: {
-                services: {
-                  serviceName: invoiceData.selectPackage[i].serviceName,
-                  price: invoiceData.selectPackage[i].price,
-                  tax: invoiceData.selectPackage[i].tax,
-                  Quantity: invoiceData.selectPackage[i].Quantity,
-                  discount: invoiceData.selectPackage[i].discount,
-                  total: invoiceData.selectPackage[i].total,
-                },
-              },
-            },
-            {
-              new: true,
-              runValidators: true,
-              userFindAndModify: false,
-            }
-          );
-        }
-        res.status(200).json({
-          success: true,
-          message: "invoice update successfully.",
-          data: invoice,
-        });
-      }
+
+      const updatedInvoice = await Invoice.findById(id);
+      res.status(200).json({
+        success: true,
+        message: "Invoice updated successfully.",
+        data: updatedInvoice,
+      });
     } else if (
       invoiceData.serviceId ||
       invoiceData.sparePartsId ||
       invoiceData.selectPackageId
     ) {
-      if (invoiceData.serviceId) {
-        const invoice = Invoice.updateOne(
-          { "services._id": invoiceData.serviceId },
-          {
-            $set: {
-              "services.$.serivceName": invoiceData.serviceName,
-              "services.$.price": invoiceData.price,
-              "services.$.tax": invoiceData.tax,
-              "services.$.Quantity": invoiceData.Quantity,
-              "services.$.discount": invoiceData.discount,
-              "services.$.total": invoiceData.total,
-            },
-          },
-
-          { new: true, runValidators: true, userFindAndModify: false }
-        );
-
-        res.status(200).json({
-          success: true,
-          message: "invoice update successfully.",
-          data: invoice,
-        });
+      for (const itemType of ['services', 'spareParts', 'selectPackage']) {
+        if (invoiceData[`${itemType}Id`]) {
+          const updateField = `${itemType}.$`;
+          await Invoice.updateOne(
+            { [`${itemType}._id`]: invoiceData[`${itemType}Id`] },
+            {
+              $set: {
+                [updateField]: {
+                  serviceName: invoiceData.serviceName,
+                  price: invoiceData.price,
+                  tax: invoiceData.tax,
+                  Quantity: invoiceData.Quantity,
+                  discount: invoiceData.discount,
+                  total: invoiceData.total,
+                },
+              },
+            }
+          );
+        }
       }
 
-      if (invoiceData.sparePartsId) {
-        const invoice = Invoice.updateOne(
-          { "spareParts._id": invoiceData.sparePartsId },
-          {
-            $set: {
-              "spareParts.$.partsName": invoiceData.partsName,
-              "spareParts.$.price": invoiceData.price,
-              "spareParts.$.tax": invoiceData.tax,
-              "spareParts.$.Quantity": invoiceData.Quantity,
-              "spareParts.$.discount": invoiceData.discount,
-              "spareParts.$.total": invoiceData.total,
-            },
-          },
-
-          { new: true, runValidators: true, userFindAndModify: false }
-        );
-
-        res.status(200).json({
-          success: true,
-          message: "invoice update successfully.",
-          data: invoice,
-        });
-      }
-
-      if (invoiceData.selectPackage) {
-        const invoice = Invoice.updateOne(
-          { "selectPackage._id": invoiceData.selectPackage },
-          {
-            $set: {
-              "selectPackage.$.packageName": invoiceData.packageName,
-              "selectPackage.$.price": invoiceData.price,
-              "selectPackage.$.tax": invoiceData.tax,
-              "selectPackage.$.Quantity": invoiceData.Quantity,
-              "selectPackage.$.discount": invoiceData.discount,
-              "selectPackage.$.total": invoiceData.total,
-            },
-          },
-
-          { new: true, runValidators: true, userFindAndModify: false }
-        );
-
-        res.status(200).json({
-          success: true,
-          message: "invoice update successfully.",
-          data: invoice,
-        });
-      }
+      const updatedInvoice = await Invoice.findById(id);
+      res.status(200).json({
+        success: true,
+        message: "Invoice updated successfully.",
+        data: updatedInvoice,
+      });
     } else {
-      const invoice = await Invoice.findByIdAndUpdate(id, invoiceData, {
+      const updatedInvoice = await Invoice.findByIdAndUpdate(id, invoiceData, {
         new: true,
         runValidators: true,
-        userFindAndModify: false,
       });
       res.status(200).json({
         success: true,
-        message: "invoice update successfully.",
-        data: invoice,
+        message: "Invoice updated successfully.",
+        data: updatedInvoice,
       });
     }
   } catch (error) {
     console.log(error);
-    res.status(400).send("Somthing went wrong.");
+    res.status(400).send("Something went wrong.");
   }
 };
+
+
+
+
+
 
 exports.deleteSinglePartsOrServiceFromInvoice = async (req, res) => {
   try {
