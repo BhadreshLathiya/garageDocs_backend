@@ -243,8 +243,6 @@ exports.deleteSingleInvoiceDetail = async (req, res) => {
 //   }
 // };
 
-
-
 exports.updateInvoice = async (req, res) => {
   try {
     const id = req.params.id;
@@ -255,7 +253,7 @@ exports.updateInvoice = async (req, res) => {
       invoiceData.spareParts ||
       invoiceData.selectPackage
     ) {
-      for (const itemType of ['services', 'spareParts', 'selectPackage']) {
+      for (const itemType of ["services", "spareParts", "selectPackage"]) {
         if (invoiceData[itemType]) {
           for (const item of invoiceData[itemType]) {
             const itemId = mongoose.Types.ObjectId(item._id);
@@ -275,13 +273,15 @@ exports.updateInvoice = async (req, res) => {
         data: updatedInvoice,
       });
     } else if (
-      invoiceData.serviceId ||
+      invoiceData.servicesId ||
       invoiceData.sparePartsId ||
       invoiceData.selectPackageId
     ) {
-      for (const itemType of ['services', 'spareParts', 'selectPackage']) {
+      for (const itemType of ["services", "spareParts", "selectPackage"]) {
+        console.log(invoiceData);
         if (invoiceData[`${itemType}Id`]) {
           const updateField = `${itemType}.$`;
+
           await Invoice.updateOne(
             { [`${itemType}._id`]: invoiceData[`${itemType}Id`] },
             {
@@ -322,11 +322,6 @@ exports.updateInvoice = async (req, res) => {
     res.status(400).send("Something went wrong.");
   }
 };
-
-
-
-
-
 
 exports.deleteSinglePartsOrServiceFromInvoice = async (req, res) => {
   try {

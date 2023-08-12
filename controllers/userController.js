@@ -255,7 +255,6 @@ exports.updateSingleUserDetail = async (req, res) => {
       user.workShopName = req.body.workShopName;
     }
     if (req.files["image"]) {
-   
       if (user.image) {
         fs.unlink(user.image, function (err) {
           if (err && err.code == "ENOENT") {
@@ -286,60 +285,6 @@ exports.updateSingleUserDetail = async (req, res) => {
       user.signature = req.files["image2"][0].path;
     }
     await user.save();
-    // if (req.file && req.body) {
-    //   info = { ...req.body, image: req.file.path };
-    //   let userData = await User.findById(id);
-    //   fs.unlink(userData.image, function (err) {
-    //     if (err && err.code == "ENOENT") {
-    //       console.info("File doesn't exist, won't remove it.");
-    //     } else if (err) {
-    //       console.error("Error occurred while trying to remove file");
-    //     } else {
-    //       console.info(`removed`);
-    //     }
-    //   });
-    //   await User.findByIdAndUpdate(id, info, {
-    //     new: true,
-    //     runValidators: true,
-    //     userFindAndModify: true,
-    //   });
-    //   const data = await User.findById(id);
-    //   res
-    //     .status(200)
-    //     .json({ data: data, message: "Updated user", success: true });
-    // } else if (req.files && !req.body) {
-    //   let userData = await User.findById(id);
-    //   fs.unlink(userData.image, function (err) {
-    //     if (err && err.code == "ENOENT") {
-    //       console.info("File doesn't exist, won't remove it.");
-    //     } else if (err) {
-    //       console.error("Error occurred while trying to remove file");
-    //     } else {
-    //       console.info(`removed`);
-    //     }
-    //   });
-    //   info = { image: req.file.path };
-
-    //   await User.findByIdAndUpdate(id, info, {
-    //     new: true,
-    //     runValidators: true,
-    //     userFindAndModify: true,
-    //   });
-    //   const data = await User.findById(id);
-    //   res
-    //     .status(200)
-    //     .json({ data: data, message: "Updated user", success: true });
-    // } else {
-    //   await User.findByIdAndUpdate(id, req.body, {
-    //     new: true,
-    //     runValidators: true,
-    //     userFindAndModify: true,
-    //   });
-    //   const data = await User.findById(id);
-    //   res
-    //     .status(200)
-    //     .json({ data: data, message: "Updated user", success: true });
-    // }
     res
       .status(200)
       .json({ data: user, message: "Updated user", success: true });
@@ -351,7 +296,7 @@ exports.updateSingleUserDetail = async (req, res) => {
 
 exports.getAllUser = async (req, res) => {
   try {
-    const data = await User.find();
+    const data = await User.find().sort({ createdAt: -1 });
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.limit) || 5;
     const skip = (page - 1) * pageSize;
