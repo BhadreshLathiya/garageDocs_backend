@@ -248,8 +248,17 @@ exports.updateSingleUserDetail = async (req, res) => {
     if (req.body.ownerName) {
       user.ownerName = req.body.ownerName;
     }
+    if (req.body.mobileNo) {
+      user.mobileNo = req.body.mobileNo;
+    }
+    if (req.body.password) {
+      user.password = req.body.password;
+    }
+    if (req.body.block) {
+      user.isBlock = req.body.isBlock;
+    }
     if (req.body.workShopAddress) {
-      user.ownerName = req.body.workShopAddress;
+      user.workShopAddress = req.body.workShopAddress;
     }
     if (req.body.workShopName) {
       user.workShopName = req.body.workShopName;
