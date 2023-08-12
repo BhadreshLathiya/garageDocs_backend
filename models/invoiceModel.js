@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const invoiceSchema = new mongoose.Schema({
   mobileNo: {
     type: String,
-  }, 
+  },
   name: {
     type: String,
   },
@@ -29,6 +29,9 @@ const invoiceSchema = new mongoose.Schema({
     type: String,
   },
   vehicleModel: {
+    type: String,
+  },
+  vehiclePlateNumber: {
     type: String,
   },
   kilometer: {
@@ -117,7 +120,7 @@ const invoiceSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    default:"create"
+    default: "create",
   },
   totalPayment: {
     type: Number,
@@ -130,6 +133,12 @@ const invoiceSchema = new mongoose.Schema({
   },
   isPaymentStatus: {
     type: String,
+  },
+  checkList: {
+    type: Array,
+  },
+  vehicleImages: {
+    type: Array,
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,

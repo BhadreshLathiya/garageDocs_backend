@@ -1,5 +1,6 @@
 const express = require("express");
 const { verifyToken } = require("../middelware/auth");
+const upload = require("../middelware/fileUpload");
 const {
   createInvoice,
   getSingleInvoiceDetail,
@@ -9,6 +10,7 @@ const {
   allInvoiceforSingleUser,
   getStatusWiseInvoiceForSingleUser,
   statusCountingInvoice,
+  getInvoiceBySearch,
 } = require("../controllers/invoiceController");
 const Router = express.Router();
 
@@ -23,16 +25,21 @@ Router.delete(
   verifyToken,
   deleteSingleInvoiceDetail
 );
-Router.put("/update_single_invoice_detail/:id", verifyToken, updateInvoice);
+Router.put(
+  "/update_single_invoice_detail/:id",
+  upload.array("image"),
+  verifyToken,
+  updateInvoice
+);
 Router.put(
   "/delete_single_parts_or_service_from_invoice/:id",
-  verifyToken,
+  // verifyToken,
   deleteSinglePartsOrServiceFromInvoice
 );
 
 Router.get(
   "/get_all_invoice_for_single_user/:id",
-  verifyToken,
+  // verifyToken,
   allInvoiceforSingleUser
 );
 
@@ -41,6 +48,8 @@ Router.get(
   verifyToken,
   getStatusWiseInvoiceForSingleUser
 );
+
+Router.get("/invoice/search/:id", verifyToken, getInvoiceBySearch);
 
 Router.get("/statusCountingInvoice/:id", verifyToken, statusCountingInvoice);
 

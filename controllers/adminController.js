@@ -44,14 +44,14 @@ exports.loginAdmin = async (req, res) => {
     }
     const user = await Admin.findOne({ email }).select("+password");
     if (!user) {
-      return res.status(200).json({
+      return res.status(400).json({
         success: false,
         message: "Invalid Email or Password",
       });
     }
     const isPasswordMatch = await user.comparePassword(password);
     if (!isPasswordMatch) {
-      return res.status(200).json({
+      return res.status(400).json({
         success: false,
         message: "Invalid Email or Password",
       });
