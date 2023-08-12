@@ -13,6 +13,7 @@ const {
   simpleLogin,
   verifyOtp,
   resendOtp,
+  getUserBySearch,
 } = require("../controllers/userController");
 const upload = require("../middelware/fileUpload");
 const { verifyToken } = require("../middelware/auth");
@@ -34,5 +35,6 @@ Router.put(
 Router.get("/get_all_user", verifyToken, getAllUser);
 Router.delete("/delete_single_user/:id", verifyToken, deleteSingleUser);
 Router.put("/log_out_user/:id", verifyToken, logOutUser);
+Router.get("/user/search", verifyToken,getUserBySearch);
 
 module.exports = Router;
