@@ -362,23 +362,25 @@ exports.getUserBySearch = async (req, res) => {
   try {
     let event = req.query.search;
     event = event.split(" ").join("").trim();
-    // console.log(event)
-    const regfirsname = new RegExp(event, "i"); //this is for we serch meet or Meet or MEET all are same
-    // console.log(regfirsname);
+    
+    const regEvent = new RegExp(event, "i");
+
     let user = await User.find({
-      workShopName: regfirsname,
-      ownerName: regfirsname,
-      email:regfirsname,
-      mobileNo:regfirsname,
-    }).sort({createdAt : -1});
-    // console.log(user)
+      $or: [
+        { workShopName: regEvent },
+        { ownerName: regEvent },
+        { email: regEvent },
+        { mobileNo: regEvent }
+      ]
+    }).sort({ createdAt: -1 });
+
     res.status(200).send({
-      message: "event listing successfully.....",
+      success: true,
+      message: "Event listing successful...",
       data: user,
     });
-    // console.log(user, "single Admin search");
   } catch (error) {
     console.log(error);
-    res.status(400).send("Somthing went wrong.");
+    res.status(400).send("Something went wrong.");
   }
 };
