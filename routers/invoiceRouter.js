@@ -45,12 +45,16 @@ Router.get(
 
 Router.get(
   "/get_status_wise_invoice_for_single_user/:id",
-  verifyToken,
+  // verifyToken,
   getStatusWiseInvoiceForSingleUser
 );
 
-Router.get("/invoice/search/:id", verifyToken, getInvoiceBySearch);
+Router.get("/status_counting_invoice/:id", 
+// verifyToken,
+ statusCountingInvoice);
 
-Router.get("/statusCountingInvoice/:id", verifyToken, statusCountingInvoice);
+Router.get("/invoice/search/:id", 
+// verifyToken,
+ getInvoiceBySearch);
 
 module.exports = Router;
