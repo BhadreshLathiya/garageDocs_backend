@@ -263,6 +263,12 @@ exports.updateSingleUserDetail = async (req, res) => {
     if (req.body.workShopName) {
       user.workShopName = req.body.workShopName;
     }
+    if (req.body.startDate) {
+      user.startDate = req.body.startDate;
+    }
+    if (req.body.endDate) {
+      user.endDate = req.body.endDate;
+    }
     if (req.files["image"]) {
       if (user.image) {
         fs.unlink(user.image, function (err) {
