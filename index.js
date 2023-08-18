@@ -15,6 +15,7 @@ const setting = require("./routers/settingRouter");
 const invoice = require("./routers/invoiceRouter");
 const car = require("./routers/carRouter");
 const sendEmail = require("./middelware/sendMail");
+const servicePackage = require("./routers/servicePackage");
 const port = process.env.PORT;
 mongoose.set("strictQuery", false);
 mongoose
@@ -39,6 +40,7 @@ app.use(cors());
 app.use("/uploads", express.static("uploads"));
 app.use("/api/v1", user);
 app.use("/api/v1", service);
+app.use("/api/v1", servicePackage);
 app.use("/api/v1", admin);
 app.use("/api/v1", setting);
 app.use("/api/v1", invoice);
