@@ -32,8 +32,8 @@ exports.getAllServicePackageforSingleUser = async (req, res) => {
     const totalPages = Math.ceil(total / pageSize);
     const result = data.slice(skip, skip + pageSize);
     if (page > totalPages) {
-      return res.status(404).json({
-        status: "failed",
+      return res.status(200).json({
+        status: false,
         massage: "No data found",
       });
     }
