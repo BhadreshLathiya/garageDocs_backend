@@ -190,7 +190,7 @@ exports.allInvoiceforSingleUser = async (req, res) => {
     const result = data.slice(skip, skip + pageSize);
     if (page > totalPages) {
       return res.status(404).json({
-        status: "failed",
+        status: false,
         massage: "No data found",
       });
     }
@@ -229,7 +229,7 @@ exports.getStatusWiseInvoiceForSingleUser = async (req, res) => {
     const result = data.slice(skip, skip + pageSize);
     if (page > totalPages) {
       return res.status(404).json({
-        status: "failed",
+        status: false,
         massage: "No data found",
       });
     }

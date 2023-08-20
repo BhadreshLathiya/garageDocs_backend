@@ -1,19 +1,18 @@
-const carCompanyName = require("../models/carCompanyName");
-const CarCompanyName = require("../models/carCompanyName");
+const BikeCompanyName = require("../models/bikeCompanyName");
 
-exports.multipleCarCompanyName = async (req, res) => {
+exports.multipleBikeCompanyName = async (req, res) => {
   try {
-    const carData = req.body;
+    const bikeData = req.body;
 
-    for (let i = 0; i < carData.carCompanyName.length; i++) {
-      await CarCompanyName.create({
-        companyName: carData.carCompanyName[i],
+    for (let i = 0; i < bikeData.bikeCompanyName.length; i++) {
+      await BikeCompanyName.create({
+        companyName: bikeData.bikeCompanyName[i],
       });
     }
-    const data = await CarCompanyName.find();
+    const data = await BikeCompanyName.find();
     res.status(200).send({
       success: true,
-      message: "car data listing successfully....",
+      message: "bike data listing successfully....",
       data: data,
     });
   } catch (error) {
@@ -23,23 +22,23 @@ exports.multipleCarCompanyName = async (req, res) => {
   }
 };
 
-exports.addCarCompanyModel = async (req, res) => {
+exports.addBikeCompanyModel = async (req, res) => {
   try {
     const id = req.params.id;
-    const carModel = req.body.carModel;
-    for (let i = 0; i < carModel.length; i++) {
-      await CarCompanyName.findByIdAndUpdate(
+    const bikeModel = req.body.bikeModel;
+    for (let i = 0; i < bikeModel.length; i++) {
+      await BikeCompanyName.findByIdAndUpdate(
         id,
         {
-          carModel: carModel,
+          bikeModel: bikeModel,
         },
         { new: true, runValidators: true, userFindAndModify: false }
       );
     }
-    const data = await CarCompanyName.findById(id);
+    const data = await BikeCompanyName.findById(id);
     res.status(200).send({
       success: true,
-      message: "car model name add.",
+      message: "bike model name add.",
       data: data,
     });
   } catch (error) {
@@ -48,17 +47,17 @@ exports.addCarCompanyModel = async (req, res) => {
   }
 };
 
-exports.addSingleCarCompany = async (req, res) => {
+exports.addSingleBikeCompany = async (req, res) => {
   try {
-    const carData = req.body;
-    const data = await carCompanyName.create({
-      companyName: carData.companyName,
-      carModel: carData.carModel,
+    const bikeData = req.body;
+    const data = await BikeCompanyName.create({
+      companyName: bikeData.companyName,
+      bikeModel: bikeData.bikeModel,
     });
 
     res.status(200).send({
       success: true,
-      message: "single car company name add successfully....",
+      message: "single bike company name add successfully....",
       data: data,
     });
   } catch (error) {
@@ -67,33 +66,33 @@ exports.addSingleCarCompany = async (req, res) => {
   }
 };
 
-exports.getSingleCarCompanyDetail = async (req, res) => {
-  try {
-    const id = req.params.id;
-    const data = await carCompanyName.findById(id);
-    res.status(200).send({
-      success: true,
-      message: "get single car comapny detail successfully....",
-      data: data,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(400).send("Somthing went wrong.");
-  }
-};
-
-exports.updateSingleCarCompanyDetail = async (req, res) => {
+exports.getSingleBikeCompanyDetail = async (req, res) => {
   try {
     const id = req.params.id;
-    const carData = req.body;
-    const data = await carCompanyName.findByIdAndUpdate(id, carData, {
+    const data = await BikeCompanyName.findById(id);
+    res.status(200).send({
+      success: true,
+      message: "get single bike comapny detail successfully....",
+      data: data,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("Somthing went wrong.");
+  }
+};
+
+exports.updateSingleBikeCompanyDetail = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const bikeData = req.body;
+    const data = await BikeCompanyName.findByIdAndUpdate(id, bikeData, {
       new: true,
       runValidators: true,
       userFindAndModify: false,
     });
     res.status(200).send({
       success: true,
-      message: "update single car comapny detail successfully....",
+      message: "update single bike comapny detail successfully....",
       data: data,
     });
   } catch (error) {
@@ -102,13 +101,13 @@ exports.updateSingleCarCompanyDetail = async (req, res) => {
   }
 };
 
-exports.deleteSingleCarCompanyDetail = async (req, res) => {
+exports.deleteSingleBikeCompanyDetail = async (req, res) => {
   try {
     const id = req.params.id;
-    await carCompanyName.findByIdAndDelete(id);
+    await BikeCompanyName.findByIdAndDelete(id);
     res.status(200).send({
       success: true,
-      message: "delete car comapny detail successfully....",
+      message: "delete bike comapny detail successfully....",
       data: data,
     });
   } catch (error) {
@@ -117,9 +116,9 @@ exports.deleteSingleCarCompanyDetail = async (req, res) => {
   }
 };
 
-exports.getAllCarCompany = async (req, res) => {
+exports.getAllBikeCompany = async (req, res) => {
   try {
-    const data = await CarCompanyName.find();
+    const data = await BikeCompanyName.find();
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.limit) || 5;
     const skip = (page - 1) * pageSize;
@@ -139,7 +138,7 @@ exports.getAllCarCompany = async (req, res) => {
     } else {
       res.status(200).json({
         status: true,
-        message: "Get all Car company.",
+        message: "Get all bike company.",
         count: result.length,
         page,
         totalPages,

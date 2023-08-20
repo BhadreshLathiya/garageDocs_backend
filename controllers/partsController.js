@@ -66,7 +66,7 @@ exports.getAllPartForUser = async (req, res) => {
 
     if (page > totalPages) {
       return res.status(404).json({
-        status: "failed",
+        status: false,
         massage: "No data found",
       });
     }
@@ -102,7 +102,7 @@ exports.getAllPartForAdmin = async (req, res) => {
 
     if (page > totalPages) {
       return res.status(404).json({
-        status: "failed",
+        status: false,
         massage: "No data found",
       });
     }
