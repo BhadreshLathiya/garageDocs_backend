@@ -20,16 +20,16 @@ Router.get("/get_all_part_for_user/:id", verifyToken, getAllPartForUser);
 Router.get("/get_all_part_for_admin", verifyToken, getAllPartForAdmin);
 Router.get("/get_single_part/:id", verifyToken, getSinglePart);
 Router.get(
-  "/get_single_part_detail_by_user/;id",
+  "/get_single_part_detail_by_user/:id",
   verifyToken,
   getSinglePartDetailByUser
 );
-Router.update(
+Router.put(
   "/update_single_part_detail_by_user/:id",
   verifyToken,
   updateSinglePartDetailByUser
 );
-Router.update(
+Router.put(
   "/update_single_part_by_admin/:id",
   verifyToken,
   updateSinglePartByAdmin
@@ -40,7 +40,7 @@ Router.delete(
   verifyToken,
   deleteSinglePartDetailInPartDetail
 );
-Router.update(
+Router.put(
   "/delete_single_part_in_part_/:id",
   verifyToken,
   deleteSinglePartInPart

@@ -37,7 +37,7 @@ Router.delete(
   deleteSingleServiceDetailforsingleUser
 );
 Router.get(
-  "/search_service_form_single_user/:id",
+  "//:id",
   verifyToken,
   serviceSearch
 );

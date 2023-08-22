@@ -109,7 +109,7 @@ exports.deleteSingleCarCompanyDetail = async (req, res) => {
     res.status(200).send({
       success: true,
       message: "delete car comapny detail successfully....",
-      data: data,
+    
     });
   } catch (error) {
     console.log(error);
@@ -119,15 +119,15 @@ exports.deleteSingleCarCompanyDetail = async (req, res) => {
 
 exports.getAllCarCompany = async (req, res) => {
   try {
-    const data = await CarCompanyName.find();
+    const data = await CarCompanyName.find().sort({createdAt:-1});
     const page = parseInt(req.query.page) || 1;
-    const pageSize = parseInt(req.query.limit) || 5;
+    const pageSize = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * pageSize;
     const total = data.length;
     const totalPages = Math.ceil(total / pageSize);
     const result = data.slice(skip, skip + pageSize);
     if (page > totalPages) {
-      return res.status(404).json({
+      return res.status(200).json({
         status: false,
         massage: "No data found",
       });

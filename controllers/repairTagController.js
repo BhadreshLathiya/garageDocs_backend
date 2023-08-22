@@ -33,7 +33,7 @@ exports.getAllRepairTagforSingleUser = async (req, res) => {
     const totalPages = Math.ceil(total / pageSize);
     const result = newData.slice(skip, skip + pageSize);
     if (page > totalPages) {
-      return res.status(404).json({
+      return res.status(200).json({
         status: false,
         massage: "No data found",
       });

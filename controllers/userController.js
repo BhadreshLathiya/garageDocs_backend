@@ -121,10 +121,15 @@ exports.simpleLogin = async (req, res) => {
       });
     } else {
       const data = await User.findOne({ email: req.body.email });
+      data.token = jwt.sign({ id: data._id }, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRE,
+      });
+      await data.save();
       if (data.isVerify) {
-        res.status(400).json({
-          success: false,
-          message: "user already exist",
+        res.status(200).json({
+          success: true,
+          message: "user login successfully",
+          data: data,
         });
       } else {
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -171,6 +176,9 @@ exports.verifyOtp = async (req, res) => {
         if (data.otp === req.body.otp) {
           data.isVerify = true;
           data.otp = null;
+          data.token = jwt.sign({ id: data._id }, process.env.JWT_SECRET, {
+            expiresIn: process.env.JWT_EXPIRE,
+          });
           await data.save();
           res.status(200).json({
             success: true,
@@ -242,6 +250,7 @@ exports.getSingleUserDetail = async (req, res) => {
 
 exports.updateSingleUserDetail = async (req, res) => {
   try {
+    console.log(req.body.startDate)
     const id = req.params.id;
     const user = await User.findById(id);
 
@@ -263,7 +272,13 @@ exports.updateSingleUserDetail = async (req, res) => {
     if (req.body.workShopName) {
       user.workShopName = req.body.workShopName;
     }
-    if (req.files["image"]) {
+    if (req.body.startDate) {
+      user.startDate = req.body.startDate;
+    }
+    if (req.body.endDate) {
+      user.endDate = req.body.endDate;
+    }
+    if (req.files?.["image"]) {
       if (user.image) {
         fs.unlink(user.image, function (err) {
           if (err && err.code == "ENOENT") {
@@ -278,7 +293,7 @@ exports.updateSingleUserDetail = async (req, res) => {
 
       user.image = req.files["image"][0].path;
     }
-    if (req.files["image2"]) {
+    if (req.files?.["image2"]) {
       if (user.signature) {
         fs.unlink(user.signature, function (err) {
           if (err && err.code == "ENOENT") {
@@ -371,7 +386,7 @@ exports.getUserBySearch = async (req, res) => {
   try {
     let event = req.query.search;
     event = event.split(" ").join("").trim();
-    
+
     const regEvent = new RegExp(event, "i");
 
     let user = await User.find({
@@ -379,8 +394,8 @@ exports.getUserBySearch = async (req, res) => {
         { workShopName: regEvent },
         { ownerName: regEvent },
         { email: regEvent },
-        { mobileNo: regEvent }
-      ]
+        { mobileNo: regEvent },
+      ],
     }).sort({ createdAt: -1 });
 
     res.status(200).send({

@@ -65,7 +65,7 @@ exports.getAllPartForUser = async (req, res) => {
     const result = totalPart.slice(skip, skip + pageSize);
 
     if (page > totalPages) {
-      return res.status(404).json({
+      return res.status(200).json({
         status: false,
         massage: "No data found",
       });
@@ -101,7 +101,7 @@ exports.getAllPartForAdmin = async (req, res) => {
     const result = adminPart.slice(skip, skip + pageSize);
 
     if (page > totalPages) {
-      return res.status(404).json({
+      return res.status(200).json({
         status: false,
         massage: "No data found",
       });
