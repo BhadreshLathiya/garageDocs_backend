@@ -68,6 +68,199 @@ const userSchema = new mongoose.Schema({
   startDate: {
     type: Date,
   },
+  repairOrder: {
+    type: {
+      create: {
+        type: Boolean,
+        default: false,
+      },
+      modify: {
+        type: Boolean,
+        default: false,
+      },
+
+      view: {
+        type: Boolean,
+        default: false,
+      },
+      delete: {
+        type: Boolean,
+        default: false,
+      },
+      price: {
+        type: Boolean,
+        default: false,
+      },
+    },
+    default: {
+      create: false,
+      modify: false,
+      view: false,
+      delete: false,
+      price: false,
+    },
+  },
+
+  counterSale: {
+    type: {
+      create: {
+        type: Boolean,
+        default: false,
+      },
+      modify: {
+        type: Boolean,
+        default: false,
+      },
+      view: {
+        type: Boolean,
+        default: false,
+      },
+      delete: {
+        type: Boolean,
+        default: false,
+      },
+    },
+    default: {
+      create: false,
+      modify: false,
+      view: false,
+      delete: false,
+    },
+  },
+  purchaseOrder: {
+    type: {
+      create: {
+        type: Boolean,
+        default: false,
+      },
+      modify: {
+        type: Boolean,
+        default: false,
+      },
+      view: {
+        type: Boolean,
+        default: false,
+      },
+      delete: {
+        type: Boolean,
+        default: false,
+      },
+    },
+    default: {
+      create: false,
+      modify: false,
+      view: false,
+      delete: false,
+    },
+  },
+  appointment: {
+    type: {
+      create: {
+        type: Boolean,
+        default: false,
+      },
+      modify: {
+        type: Boolean,
+        default: false,
+      },
+      view: {
+        type: Boolean,
+        default: false,
+      },
+      delete: {
+        type: Boolean,
+        default: false,
+      },
+    },
+    default: {
+      create: false,
+      modify: false,
+      view: false,
+      delete: false,
+    },
+  },
+  accounts: {
+    type: {
+      create: {
+        type: Boolean,
+        default: false,
+      },
+      modify: {
+        type: Boolean,
+        default: false,
+      },
+      view: {
+        type: Boolean,
+        default: false,
+      },
+      delete: {
+        type: Boolean,
+        default: false,
+      },
+      income: {
+        type: Boolean,
+        default: false,
+      },
+      paymentDue: {
+        type: Boolean,
+        default: false,
+      },
+    },
+    default: {
+      create: false,
+      modify: false,
+      view: false,
+      delete: false,
+      income: false,
+      paymentDue: false,
+    },
+  },
+  workshopeDetail: {
+    type: {
+      edit: {
+        type: Boolean,
+        default: false,
+      },
+      userAccess: {
+        type: Boolean,
+        default: false,
+      },
+      employee: {
+        type: Boolean,
+        default: false,
+      },
+      vendors: {
+        type: Boolean,
+        default: false,
+      },
+      reports: {
+        type: Boolean,
+        default: false,
+      },
+      downloadReports: {
+        type: Boolean,
+        default: false,
+      },
+      itemMaster: {
+        type: Boolean,
+        default: false,
+      },
+      packageMaster: {
+        type: Boolean,
+        default: false,
+      },
+    },
+    default: {
+      userAccess: false,
+      edit: false,
+      employee: false,
+      vendors: false,
+      reports: false,
+      downloadReports: false,
+      itemMaster: false,
+      packageMaster: false,
+    },
+  },
   resetPasswordToken: String,
   resetPasswordExpire: Date,
 });
