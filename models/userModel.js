@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema({
   },
   isExpire: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   googleId: {
     type: String,
@@ -60,7 +60,7 @@ const userSchema = new mongoose.Schema({
   },
   isBlock: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   endDate: {
     type: Date,
@@ -72,32 +72,32 @@ const userSchema = new mongoose.Schema({
     type: {
       create: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       modify: {
         type: Boolean,
-        default: false,
+        default: true,
       },
 
       view: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       delete: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       price: {
         type: Boolean,
-        default: false,
+        default: true,
       },
     },
     default: {
-      create: false,
-      modify: false,
-      view: false,
-      delete: false,
-      price: false,
+      create: true,
+      modify: true,
+      view: true,
+      delete: true,
+      price: true,
     },
   },
 
@@ -105,160 +105,160 @@ const userSchema = new mongoose.Schema({
     type: {
       create: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       modify: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       view: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       delete: {
         type: Boolean,
-        default: false,
+        default: true,
       },
     },
     default: {
-      create: false,
-      modify: false,
-      view: false,
-      delete: false,
+      create: true,
+      modify: true,
+      view: true,
+      delete: true,
     },
   },
   purchaseOrder: {
     type: {
       create: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       modify: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       view: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       delete: {
         type: Boolean,
-        default: false,
+        default: true,
       },
     },
     default: {
-      create: false,
-      modify: false,
-      view: false,
-      delete: false,
+      create: true,
+      modify: true,
+      view: true,
+      delete: true,
     },
   },
   appointment: {
     type: {
       create: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       modify: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       view: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       delete: {
         type: Boolean,
-        default: false,
+        default: true,
       },
     },
     default: {
-      create: false,
-      modify: false,
-      view: false,
-      delete: false,
+      create: true,
+      modify: true,
+      view: true,
+      delete: true,
     },
   },
   accounts: {
     type: {
       create: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       modify: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       view: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       delete: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       income: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       paymentDue: {
         type: Boolean,
-        default: false,
+        default: true,
       },
     },
     default: {
-      create: false,
-      modify: false,
-      view: false,
-      delete: false,
-      income: false,
-      paymentDue: false,
+      create: true,
+      modify: true,
+      view: true,
+      delete: true,
+      income: true,
+      paymentDue: true,
     },
   },
   workshopeDetail: {
     type: {
       edit: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       userAccess: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       employee: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       vendors: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       reports: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       downloadReports: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       itemMaster: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       packageMaster: {
         type: Boolean,
-        default: false,
+        default: true,
       },
     },
     default: {
-      userAccess: false,
-      edit: false,
-      employee: false,
-      vendors: false,
-      reports: false,
-      downloadReports: false,
-      itemMaster: false,
-      packageMaster: false,
+      userAccess: true,
+      edit: true,
+      employee: true,
+      vendors: true,
+      reports: true,
+      downloadReports: true,
+      itemMaster: true,
+      packageMaster: true,
     },
   },
   resetPasswordToken: String,
