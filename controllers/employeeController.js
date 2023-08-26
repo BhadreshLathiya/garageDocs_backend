@@ -9,34 +9,35 @@ exports.createEmployee = async (req, res) => {
         success: false,
         message: "Employee already exists",
       });
-    }
-    const employeeId = Math.floor(10000000 + Math.random() * 90000000);
-    const employeeIdFind = Employee.findOne({ employeeId: employeeId });
-    const createEmployee = await Employee.create({
-      userId: req.body.userId,
-      name: req.body.name,
-      email: req.body.email,
-      phoneNo: req.body.phoneNo,
-      password: req.body.password,
-      employeeId: employeeIdFind
-        ? Math.floor(10000000 + Math.random() * 90000000)
-        : employeeId,
-      token: jwt.sign({ id: employeeId }, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRE,
-      }),
-      repairOrder: req.body.repairOrder,
-      counterSale: req.body.counterSale,
-      purchaseOrder: req.body.purchaseOrder,
-      appointment: req.body.appointment,
-      accounts: req.body.accounts,
-      workshopeDetail: req.body.workshopeDetail,
-    });
+    } else {
+      const employeeId = Math.floor(10000000 + Math.random() * 90000000);
+      const employeeIdFind = Employee.findOne({ employeeId: employeeId });
+      const createEmployee = await Employee.create({
+        userId: req.body.userId,
+        name: req.body.name,
+        email: req.body.email,
+        phoneNo: req.body.phoneNo,
+        password: req.body.password,
+        employeeId: employeeIdFind
+          ? Math.floor(10000000 + Math.random() * 90000000)
+          : employeeId,
+        token: jwt.sign({ id: employeeId }, process.env.JWT_SECRET, {
+          expiresIn: process.env.JWT_EXPIRE,
+        }),
+        repairOrder: req.body.repairOrder,
+        counterSale: req.body.counterSale,
+        purchaseOrder: req.body.purchaseOrder,
+        appointment: req.body.appointment,
+        accounts: req.body.accounts,
+        workshopeDetail: req.body.workshopeDetail,
+      });
 
-    res.status(200).json({
-      success: true,
-      message: "employee create successfully",
-      data: createEmployee,
-    });
+      res.status(200).json({
+        success: true,
+        message: "employee create successfully",
+        data: createEmployee,
+      });
+    }
   } catch (error) {
     console.log(error);
     res.status(400).json({
