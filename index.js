@@ -21,6 +21,7 @@ const servicePackage = require("./routers/servicePackage");
 const parts = require("./routers/partsRouter");
 const repairTag = require("./routers/repairTagRouter");
 const transaction = require("./routers/transactionRouter");
+const employee = require("./routers/employeeRoute");
 const port = process.env.PORT;
 mongoose.set("strictQuery", false);
 mongoose
@@ -55,5 +56,9 @@ app.use("/api/v1", setting);
 app.use("/api/v1", transaction);
 app.use("/api/v1", user);
 app.use("/api/v1", vendor);
+app.use("/api/v1", invoice);
+app.use("/api/v1", car);
+app.use("/api/v1", parts);
+app.use("/api/v1", employee);
 
 app.listen(port, () => console.log(`App listening on port ${port}.`));

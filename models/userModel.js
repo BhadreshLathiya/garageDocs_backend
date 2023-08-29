@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema({
   },
   isExpire: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   googleId: {
     type: String,
@@ -60,13 +60,206 @@ const userSchema = new mongoose.Schema({
   },
   isBlock: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   endDate: {
     type: Date,
   },
   startDate: {
     type: Date,
+  },
+  repairOrder: {
+    type: {
+      create: {
+        type: Boolean,
+        default: true,
+      },
+      modify: {
+        type: Boolean,
+        default: true,
+      },
+
+      view: {
+        type: Boolean,
+        default: true,
+      },
+      delete: {
+        type: Boolean,
+        default: true,
+      },
+      price: {
+        type: Boolean,
+        default: true,
+      },
+    },
+    default: {
+      create: true,
+      modify: true,
+      view: true,
+      delete: true,
+      price: true,
+    },
+  },
+
+  counterSale: {
+    type: {
+      create: {
+        type: Boolean,
+        default: true,
+      },
+      modify: {
+        type: Boolean,
+        default: true,
+      },
+      view: {
+        type: Boolean,
+        default: true,
+      },
+      delete: {
+        type: Boolean,
+        default: true,
+      },
+    },
+    default: {
+      create: true,
+      modify: true,
+      view: true,
+      delete: true,
+    },
+  },
+  purchaseOrder: {
+    type: {
+      create: {
+        type: Boolean,
+        default: true,
+      },
+      modify: {
+        type: Boolean,
+        default: true,
+      },
+      view: {
+        type: Boolean,
+        default: true,
+      },
+      delete: {
+        type: Boolean,
+        default: true,
+      },
+    },
+    default: {
+      create: true,
+      modify: true,
+      view: true,
+      delete: true,
+    },
+  },
+  appointment: {
+    type: {
+      create: {
+        type: Boolean,
+        default: true,
+      },
+      modify: {
+        type: Boolean,
+        default: true,
+      },
+      view: {
+        type: Boolean,
+        default: true,
+      },
+      delete: {
+        type: Boolean,
+        default: true,
+      },
+    },
+    default: {
+      create: true,
+      modify: true,
+      view: true,
+      delete: true,
+    },
+  },
+  accounts: {
+    type: {
+      create: {
+        type: Boolean,
+        default: true,
+      },
+      modify: {
+        type: Boolean,
+        default: true,
+      },
+      view: {
+        type: Boolean,
+        default: true,
+      },
+      delete: {
+        type: Boolean,
+        default: true,
+      },
+      income: {
+        type: Boolean,
+        default: true,
+      },
+      paymentDue: {
+        type: Boolean,
+        default: true,
+      },
+    },
+    default: {
+      create: true,
+      modify: true,
+      view: true,
+      delete: true,
+      income: true,
+      paymentDue: true,
+    },
+  },
+  workshopeDetail: {
+    type: {
+      edit: {
+        type: Boolean,
+        default: true,
+      },
+      userAccess: {
+        type: Boolean,
+        default: true,
+      },
+      employee: {
+        type: Boolean,
+        default: true,
+      },
+      vendors: {
+        type: Boolean,
+        default: true,
+      },
+      reports: {
+        type: Boolean,
+        default: true,
+      },
+      downloadReports: {
+        type: Boolean,
+        default: true,
+      },
+      itemMaster: {
+        type: Boolean,
+        default: true,
+      },
+      packageMaster: {
+        type: Boolean,
+        default: true,
+      },
+    },
+    default: {
+      userAccess: true,
+      edit: true,
+      employee: true,
+      vendors: true,
+      reports: true,
+      downloadReports: true,
+      itemMaster: true,
+      packageMaster: true,
+    },
   },
   resetPasswordToken: String,
   resetPasswordExpire: Date,

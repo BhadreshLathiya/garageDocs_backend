@@ -4,7 +4,7 @@ const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
 
 const employeeSchema = new mongoose.Schema({
-  garageId: {
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
@@ -23,8 +23,15 @@ const employeeSchema = new mongoose.Schema({
   employeeId: {
     type: Number,
   },
-  repairOrder: [
-    {
+  token: {
+    type: String,
+  },
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
+  repairOrder: {
+    type: {
       create: {
         type: Boolean,
         default: false,
@@ -33,6 +40,7 @@ const employeeSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
       },
+     
       view: {
         type: Boolean,
         default: false,
@@ -46,9 +54,17 @@ const employeeSchema = new mongoose.Schema({
         default: false,
       },
     },
-  ],
-  counterSale: [
-    {
+    default: {
+      create: false,
+      modify: false,
+      view: false,
+      delete: false,
+      price: false,
+    },
+  },
+
+  counterSale: {
+    type: {
       create: {
         type: Boolean,
         default: false,
@@ -66,9 +82,15 @@ const employeeSchema = new mongoose.Schema({
         default: false,
       },
     },
-  ],
-  purchaseOrder: [
-    {
+    default: {
+      create: false,
+      modify: false,
+      view: false,
+      delete: false,
+    },
+  },
+  purchaseOrder: {
+    type: {
       create: {
         type: Boolean,
         default: false,
@@ -86,9 +108,15 @@ const employeeSchema = new mongoose.Schema({
         default: false,
       },
     },
-  ],
-  appointment: [
-    {
+    default: {
+      create: false,
+      modify: false,
+      view: false,
+      delete: false,
+    },
+  },
+  appointment: {
+    type: {
       create: {
         type: Boolean,
         default: false,
@@ -106,9 +134,15 @@ const employeeSchema = new mongoose.Schema({
         default: false,
       },
     },
-  ],
-  accounts: [
-    {
+    default: {
+      create: false,
+      modify: false,
+      view: false,
+      delete: false,
+    },
+  },
+  accounts: {
+    type: {
       create: {
         type: Boolean,
         default: false,
@@ -134,9 +168,17 @@ const employeeSchema = new mongoose.Schema({
         default: false,
       },
     },
-  ],
-  workshopeDetail: [
-    {
+    default: {
+      create: false,
+      modify: false,
+      view: false,
+      delete: false,
+      income: false,
+      paymentDue: false,
+    },
+  },
+  workshopeDetail: {
+    type: {
       edit: {
         type: Boolean,
         default: false,
@@ -170,7 +212,17 @@ const employeeSchema = new mongoose.Schema({
         default: false,
       },
     },
-  ],
+    default: {
+      userAccess: false,
+      edit: false,
+      employee: false,
+      vendors: false,
+      reports: false,
+      downloadReports: false,
+      itemMaster: false,
+      packageMaster: false,
+    },
+  },
   resetPasswordToken: String,
   resetPasswordExpire: Date,
 });
