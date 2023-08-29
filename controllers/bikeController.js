@@ -128,7 +128,7 @@ exports.getAllBikeCompany = async (req, res) => {
     if (page > totalPages) {
       return res.status(404).json({
         status: false,
-        massage: "No data found",
+        message: "No data found",
       });
     }
     if (data.length === 0) {

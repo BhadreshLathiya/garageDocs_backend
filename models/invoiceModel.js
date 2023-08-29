@@ -48,7 +48,7 @@ const invoiceSchema = new mongoose.Schema({
   },
   services: [
     {
-      serviceName: {
+      servicesName: {
         type: String,
       },
       price: {
@@ -70,7 +70,7 @@ const invoiceSchema = new mongoose.Schema({
   ],
   spareParts: [
     {
-      partsName: {
+      sparePartsName: {
         type: String,
       },
       price: {
@@ -92,7 +92,7 @@ const invoiceSchema = new mongoose.Schema({
   ],
   selectPackage: [
     {
-      packageName: {
+      selectPackagesName: {
         type: String,
       },
       price: {

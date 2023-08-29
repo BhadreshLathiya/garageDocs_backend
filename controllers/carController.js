@@ -129,7 +129,7 @@ exports.getAllCarCompany = async (req, res) => {
     if (page > totalPages) {
       return res.status(200).json({
         status: false,
-        massage: "No data found",
+        message: "No data found",
       });
     }
     if (data.length === 0) {

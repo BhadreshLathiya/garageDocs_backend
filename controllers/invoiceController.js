@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Invoice = require("../models/invoiceModel");
 
 exports.createInvoice = async (req, res) => {
@@ -96,7 +97,7 @@ exports.updateInvoice = async (req, res) => {
             {
               $set: {
                 [updateField]: {
-                  serviceName: invoiceData.serviceName,
+                  [`${itemType}.Name`]: invoiceData[`${itemType}.Name`],
                   price: invoiceData.price,
                   tax: invoiceData.tax,
                   Quantity: invoiceData.Quantity,
@@ -116,10 +117,12 @@ exports.updateInvoice = async (req, res) => {
         data: updatedInvoice,
       });
     } else {
-      const updatedInvoice = await Invoice.findByIdAndUpdate(id, invoiceData, {
+      await Invoice.findByIdAndUpdate(id, invoiceData, {
         new: true,
         runValidators: true,
       });
+
+      const updatedInvoice = await Invoice.findById(id);
       res.status(200).json({
         success: true,
         message: "Invoice updated successfully.",
@@ -136,7 +139,7 @@ exports.deleteSinglePartsOrServiceFromInvoice = async (req, res) => {
   try {
     const id = req.params.id;
     const invoiceData = req.body;
-    
+
     const updateQuery = {};
 
     if (invoiceData.serviceId) {
@@ -144,7 +147,7 @@ exports.deleteSinglePartsOrServiceFromInvoice = async (req, res) => {
         services: { _id: invoiceData.serviceId },
       };
     }
-    
+
     if (invoiceData.sparePartsId) {
       updateQuery.$pull = {
         ...updateQuery.$pull,
@@ -159,11 +162,9 @@ exports.deleteSinglePartsOrServiceFromInvoice = async (req, res) => {
       };
     }
 
-    const data = await Invoice.findOneAndUpdate(
-      { _id: id },
-      updateQuery,
-      { new: true }
-    );
+    const data = await Invoice.findOneAndUpdate({ _id: id }, updateQuery, {
+      new: true,
+    });
 
     const invoice = await Invoice.findById(id);
     res.status(200).json({
@@ -176,7 +177,6 @@ exports.deleteSinglePartsOrServiceFromInvoice = async (req, res) => {
     res.status(400).send("Something went wrong.");
   }
 };
-
 
 exports.allInvoiceforSingleUser = async (req, res) => {
   try {
@@ -191,7 +191,7 @@ exports.allInvoiceforSingleUser = async (req, res) => {
     if (page > totalPages) {
       return res.status(200).json({
         status: false,
-        massage: "No data found",
+        message: "No data found",
       });
     }
     if (data.length === 0) {
@@ -230,7 +230,7 @@ exports.getStatusWiseInvoiceForSingleUser = async (req, res) => {
     if (page > totalPages) {
       return res.status(200).json({
         status: false,
-        massage: "No data found",
+        message: "No data found",
       });
     }
     if (data.length === 0) {

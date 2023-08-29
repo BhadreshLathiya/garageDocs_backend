@@ -20,6 +20,29 @@ exports.addPart = async (req, res) => {
   }
 };
 
+exports.multiplePartAdd = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const partData = req.body;
+    for (let i = 0; i < partData.partName.length; i++) {
+      await Part.create({
+        partName: partData.partName[i],
+        userType: 1,
+        userId: id,
+      });
+    }
+    const data = await Part.find();
+    res.status(200).json({
+      success: true,
+      message: "part add successfully",
+      data: data,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("Something went wrong.");
+  }
+};
+
 exports.addPartDetailByUser = async (req, res) => {
   try {
     const userId = req.params.id;
@@ -67,7 +90,7 @@ exports.getAllPartForUser = async (req, res) => {
     if (page > totalPages) {
       return res.status(200).json({
         status: false,
-        massage: "No data found",
+        message: "No data found",
       });
     }
     if (totalPart.length === 0) {
@@ -103,7 +126,7 @@ exports.getAllPartForAdmin = async (req, res) => {
     if (page > totalPages) {
       return res.status(200).json({
         status: false,
-        massage: "No data found",
+        message: "No data found",
       });
     }
     if (adminPart.length === 0) {

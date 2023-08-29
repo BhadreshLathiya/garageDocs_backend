@@ -117,7 +117,7 @@ exports.getTransaction = async (req, res) => {
     if (page > totalPages) {
       return res.status(201).json({
         success: false,
-        massage: "No data found",
+        message: "No data found",
       });
     }
     const result = await data;

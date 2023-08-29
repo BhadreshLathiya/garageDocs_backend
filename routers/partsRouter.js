@@ -11,10 +11,12 @@ const {
   updateSinglePartByAdmin,
   deleteSinglePartDetailInPartDetail,
   deleteSinglePartInPart,
+  multiplePartAdd,
 } = require("../controllers/partsController");
 const Router = express.Router();
 
 Router.post("/add_part/:id", verifyToken, addPart);
+Router.post("/add_multiple_part/:id", multiplePartAdd);
 Router.post("/add_part_detail_by_user/:id", verifyToken, addPartDetailByUser);
 Router.get("/get_all_part_for_user/:id", verifyToken, getAllPartForUser);
 Router.get("/get_all_part_for_admin", verifyToken, getAllPartForAdmin);
