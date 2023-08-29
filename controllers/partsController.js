@@ -86,6 +86,21 @@ exports.getAllPartForUser = async (req, res) => {
     const total = totalPart.length;
     const totalPages = Math.ceil(total / pageSize);
     const result = totalPart.slice(skip, skip + pageSize);
+    const newResult = JSON.parse(JSON.stringify(result));
+    // console.log(newResult);
+    for (let i = 0; i < newResult.length; i++) {
+      const partDetailFind = await PartDetail.findOne({
+        userId: userId,
+        partId: newResult[i]._id,
+      });
+      // console.log(partDetailFind, "partDetailFind");
+
+      if (partDetailFind) {
+        newResult[i].partDetails = partDetailFind;
+      } else {
+        newResult[i].partDetails = {};
+      }
+    }
 
     if (page > totalPages) {
       return res.status(200).json({
@@ -101,10 +116,10 @@ exports.getAllPartForUser = async (req, res) => {
       res.status(200).json({
         status: true,
         message: "Get all user part.",
-        count: result.length,
+        count: newResult.length,
         page,
         totalPages,
-        data: result,
+        data: newResult,
       });
     }
   } catch (error) {
@@ -248,6 +263,20 @@ exports.deleteSinglePartInPart = async (req, res) => {
     res.status(200).json({
       status: true,
       message: "delete single part detail.",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("Something went wrong.");
+  }
+};
+
+exports.getUserAllPartDetail = async (req, res) => {
+  try {
+    const data = await PartDetail.find({ userId: req.body.userId });
+    res.status(200).json({
+      status: true,
+      message: "user part details listing successfully",
+      data: data,
     });
   } catch (error) {
     console.log(error);

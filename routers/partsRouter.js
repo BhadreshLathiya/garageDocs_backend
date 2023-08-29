@@ -12,6 +12,7 @@ const {
   deleteSinglePartDetailInPartDetail,
   deleteSinglePartInPart,
   multiplePartAdd,
+  getUserAllPartDetail,
 } = require("../controllers/partsController");
 const Router = express.Router();
 
@@ -46,6 +47,11 @@ Router.put(
   "/delete_single_part_in_part_/:id",
   verifyToken,
   deleteSinglePartInPart
+);
+Router.post(
+  "/get_all_user_part_details",
+  verifyToken,
+  getUserAllPartDetail
 );
 
 module.exports = Router;
