@@ -51,7 +51,7 @@ exports.getAllVendorForSingleUser = async (req, res) => {
     const userId = req.params.id;
     const data = await Vendor.find({ userId: userId });
     const page = parseInt(req.query.page) || 1;
-    const pageSize = parseInt(req.query.limit) || 5;
+    const pageSize = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * pageSize;
     const total = data.length;
     const totalPages = Math.ceil(total / pageSize);

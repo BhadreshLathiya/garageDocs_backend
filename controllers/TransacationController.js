@@ -1,5 +1,4 @@
 const Transaction = require("../models/transactionModel");
-const Subscription = require("../models/subscriptionModel");
 const User = require("../models//userModel");
 
 exports.addTransaction = async (req, res) => {
@@ -30,7 +29,6 @@ exports.addTransaction = async (req, res) => {
           startDate: today,
           endDate: date,
         });
-
         res.status(200).json({
           success: true,
           message: "plan added succesfully...",
@@ -57,7 +55,6 @@ exports.addTransaction = async (req, res) => {
       await User.findByIdAndUpdate(userData._id, {
         isExpire: false,
       });
-
       res.status(200).json({
         success: true,
         message: "plane added succesfully...",

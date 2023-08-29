@@ -19,6 +19,8 @@ const vendor = require("./routers/vendorRouter");
 const sendEmail = require("./middelware/sendMail");
 const servicePackage = require("./routers/servicePackage");
 const parts = require("./routers/partsRouter");
+const repairTag = require("./routers/repairTagRouter");
+const transaction = require("./routers/transactionRouter");
 const port = process.env.PORT;
 mongoose.set("strictQuery", false);
 mongoose
@@ -41,15 +43,17 @@ app.use(cookieParser());
 app.use(cors());
 
 app.use("/uploads", express.static("uploads"));
-app.use("/api/v1", user);
+app.use("/api/v1", admin);
+app.use("/api/v1", bike);
+app.use("/api/v1", car);
+app.use("/api/v1", invoice);
+app.use("/api/v1", parts);
+app.use("/api/v1", repairTag);
 app.use("/api/v1", service);
 app.use("/api/v1", servicePackage);
-app.use("/api/v1", admin);
 app.use("/api/v1", setting);
-app.use("/api/v1", invoice);
-app.use("/api/v1", car);
-app.use("/api/v1", bike);
+app.use("/api/v1", transaction);
+app.use("/api/v1", user);
 app.use("/api/v1", vendor);
-app.use("/api/v1", parts);
 
 app.listen(port, () => console.log(`App listening on port ${port}.`));
