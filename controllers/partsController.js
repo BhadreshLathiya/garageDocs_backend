@@ -60,7 +60,6 @@ exports.addPartDetailByUser = async (req, res) => {
       workShopName: req.body.workShopName,
       workShopAddress: req.body.workShopAddress,
       discription: req.body.discription,
-      partId: req.body.partId,
       userId: userId,
     });
     res.status(200).json({
@@ -77,30 +76,13 @@ exports.addPartDetailByUser = async (req, res) => {
 exports.getAllPartForUser = async (req, res) => {
   try {
     const userId = req.params.id;
-    const userPart = await Part.find({ userType: 2, userId: userId });
-    const adminPart = await Part.find({ userType: 1 });
-    const totalPart = [...userPart, ...adminPart];
+    const userPart = await PartDetail.find({ userId: userId });
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.limit) || 5;
     const skip = (page - 1) * pageSize;
-    const total = totalPart.length;
+    const total = userPart.length;
     const totalPages = Math.ceil(total / pageSize);
-    const result = totalPart.slice(skip, skip + pageSize);
-    const newResult = JSON.parse(JSON.stringify(result));
-    // console.log(newResult);
-    for (let i = 0; i < newResult.length; i++) {
-      const partDetailFind = await PartDetail.findOne({
-        userId: userId,
-        partId: newResult[i]._id,
-      });
-      // console.log(partDetailFind, "partDetailFind");
-
-      if (partDetailFind) {
-        newResult[i].partDetails = partDetailFind;
-      } else {
-        newResult[i].partDetails = {};
-      }
-    }
+    const result = userPart.slice(skip, skip + pageSize);
 
     if (page > totalPages) {
       return res.status(200).json({
@@ -108,7 +90,7 @@ exports.getAllPartForUser = async (req, res) => {
         message: "No data found",
       });
     }
-    if (totalPart.length === 0) {
+    if (userPart.length === 0) {
       res
         .status(200)
         .json({ message: "No part find.", data: [], success: false });
@@ -116,10 +98,10 @@ exports.getAllPartForUser = async (req, res) => {
       res.status(200).json({
         status: true,
         message: "Get all user part.",
-        count: newResult.length,
+        count: result.length,
         page,
         totalPages,
-        data: newResult,
+        data: result,
       });
     }
   } catch (error) {
@@ -182,11 +164,7 @@ exports.getSinglePart = async (req, res) => {
 exports.getSinglePartDetailByUser = async (req, res) => {
   try {
     const partId = req.params.id;
-    const userId = req.body.userId;
-    const partDetail = await PartDetail.findOne({
-      partId: partId,
-      userId: userId,
-    });
+    const partDetail = await PartDetail.findById(partId);
     if (partDetail) {
       res.status(200).json({
         status: true,

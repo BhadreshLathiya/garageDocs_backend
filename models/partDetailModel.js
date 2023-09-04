@@ -50,4 +50,5 @@ const userPartSchema = new mongoose.Schema({
   },
 });
 userPartSchema.set("timestamps", true);
+userPartSchema.index({ userId: 1 });
 module.exports = mongoose.model("userPart", userPartSchema);

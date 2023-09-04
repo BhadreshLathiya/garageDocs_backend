@@ -36,6 +36,7 @@ mongoose
     console.log("Connection Successfully ✌");
   })
   .catch((e) => {
+    console.log(e)
     console.log("No connection 🥵");
   });
 app.use(express.json());

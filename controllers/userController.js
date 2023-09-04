@@ -2,10 +2,13 @@ const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
 const sendEmail = require("../middelware/sendMail");
+const Part = require("../models/partModel");
+const PartDetail = require("../models/partDetailModel");
 
 // user google login
 exports.loginWithGoogle = async (req, res) => {
   try {
+    console.log("hello");
     const {
       ownerName,
       garageType,
@@ -37,10 +40,31 @@ exports.loginWithGoogle = async (req, res) => {
         expiresIn: process.env.JWT_EXPIRE,
       });
       await data.save();
+
+      const adminParts = await Part.find();
+      const adminData = JSON.parse(JSON.stringify(adminParts));
+      adminData.forEach(async (part) => {
+        await PartDetail.create({
+          partName: part.partName,
+          partType: null,
+          partNumber: 0,
+          partPurchasePrice: 0,
+          partSalePrice: 0,
+          inStock: 0,
+          minStock: 0,
+          rack: null,
+          hsn: null,
+          shopName: null,
+          workShopName: null,
+          workShopAddress: null,
+          discription: null,
+          userId: data._id,
+        });
+      });
       res.status(200).send({
         success: true,
         message: "user create successfully",
-        user: data,
+        user: adminParts,
       });
     }
   } catch (error) {
@@ -85,6 +109,26 @@ exports.loginWithFacebook = async (req, res) => {
         expiresIn: process.env.JWT_EXPIRE,
       });
       await data.save();
+      const adminParts = await Part.find();
+      const adminData = JSON.parse(JSON.stringify(adminParts));
+      adminData.forEach(async (part) => {
+        await PartDetail.create({
+          partName: part.partName,
+          partType: null,
+          partNumber: 0,
+          partPurchasePrice: 0,
+          partSalePrice: 0,
+          inStock: 0,
+          minStock: 0,
+          rack: null,
+          hsn: null,
+          shopName: null,
+          workShopName: null,
+          workShopAddress: null,
+          discription: null,
+          userId: data._id,
+        });
+      });
       res.status(200).send({
         success: true,
         message: "user create successfully",
@@ -180,6 +224,26 @@ exports.verifyOtp = async (req, res) => {
             expiresIn: process.env.JWT_EXPIRE,
           });
           await data.save();
+          const adminParts = await Part.find();
+          const adminData = JSON.parse(JSON.stringify(adminParts));
+          adminData.forEach(async (part) => {
+            await PartDetail.create({
+              partName: part.partName,
+              partType: null,
+              partNumber: 0,
+              partPurchasePrice: 0,
+              partSalePrice: 0,
+              inStock: 0,
+              minStock: 0,
+              rack: null,
+              hsn: null,
+              shopName: null,
+              workShopName: null,
+              workShopAddress: null,
+              discription: null,
+              userId: data._id,
+            });
+          });
           res.status(200).json({
             success: true,
             data: data,
@@ -250,7 +314,7 @@ exports.getSingleUserDetail = async (req, res) => {
 
 exports.updateSingleUserDetail = async (req, res) => {
   try {
-    console.log(req.body.startDate)
+    console.log(req.body.startDate);
     const id = req.params.id;
     const user = await User.findById(id);
 
