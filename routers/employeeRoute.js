@@ -16,6 +16,6 @@ Router.get("/garage/employee/:id", verifyToken, garageEmployee);
 Router.delete("/delete/employee/:id", verifyToken, deleteEmployee);
 Router.get("/get/single/employee/:id", verifyToken, getSingleEmployee);
 Router.put("/update/employee/:id", verifyToken, updateEmployee);
-Router.post("/login/employee", verifyToken, loginUser);
+Router.post("/login/employee", loginUser);
 
 module.exports = Router;
