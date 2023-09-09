@@ -22,7 +22,10 @@ const parts = require("./routers/partsRouter");
 const repairTag = require("./routers/repairTagRouter");
 const transaction = require("./routers/transactionRouter");
 const employee = require("./routers/employeeRoute");
+const account = require("./routers/accountRoute");
 const port = process.env.PORT;
+
+
 mongoose.set("strictQuery", false);
 mongoose
   .connect(process.env.MONGODB_URI, {
@@ -61,5 +64,6 @@ app.use("/api/v1", invoice);
 app.use("/api/v1", car);
 app.use("/api/v1", parts);
 app.use("/api/v1", employee);
+app.use("/api/v1", account);
 
 app.listen(port, () => console.log(`App listening on port ${port}.`));

@@ -127,9 +127,11 @@ const invoiceSchema = new mongoose.Schema({
   },
   receivePayment: {
     type: Number,
+    default: 0,
   },
   duePayment: {
     type: Number,
+    default: 0,
   },
   isPaymentStatus: {
     type: String,
