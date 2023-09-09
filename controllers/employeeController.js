@@ -31,7 +31,6 @@ exports.createEmployee = async (req, res) => {
         accounts: req.body.accounts,
         workshopeDetail: req.body.workshopeDetail,
       });
-
       res.status(200).json({
         success: true,
         message: "employee create successfully",
