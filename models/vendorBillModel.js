@@ -9,6 +9,26 @@ const vendorBillSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "vendor",
   },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user",
+  },
+  partDetailId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "userPart",
+  },
+  quantity: {
+    type: Number,
+    default: 0,
+  },
+  price: {
+    type: Number,
+    default: 0,
+  },
+  price: {
+    type: Number,
+    default: 0,
+  },
 });
 
 vendorBillSchema.set("timestamps", true);
