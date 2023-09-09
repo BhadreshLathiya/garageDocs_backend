@@ -25,11 +25,23 @@ const vendorBillSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  price: {
+  totalAmount: {
     type: Number,
     default: 0,
   },
+  pendingAmount: {
+    type: Number,
+    default: 0,
+  },
+  dueAmount: {
+    type: Number,
+    default: 0,
+  },
+  amountStatus: {
+    type: String,
+    default: "ordered",
+  },
 });
-
+a
 vendorBillSchema.set("timestamps", true);
 module.exports = mongoose.model("vendorBill", vendorBillSchema);
