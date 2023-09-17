@@ -133,6 +133,18 @@ const invoiceSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  servicesTotalAmount: {
+    type: Number,
+    default: 0,
+  },
+  partsTotalAmount: {
+    type: Number,
+    default: 0,
+  },
+  packageTotalAmount: {
+    type: Number,
+    default: 0,
+  },
   isPaymentStatus: {
     type: String,
   },
