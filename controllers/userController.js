@@ -8,7 +8,6 @@ const PartDetail = require("../models/partDetailModel");
 // user google login
 exports.loginWithGoogle = async (req, res) => {
   try {
-    console.log("hello");
     const {
       ownerName,
       garageType,

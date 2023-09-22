@@ -13,6 +13,7 @@ const {
   deleteSinglePartInPart,
   multiplePartAdd,
   getUserAllPartDetail,
+  getStockinOut,
 } = require("../controllers/partsController");
 const Router = express.Router();
 
@@ -52,6 +53,11 @@ Router.post(
   "/get_all_user_part_details",
   verifyToken,
   getUserAllPartDetail
+);
+Router.post(
+  "/stock_inor_out",
+  verifyToken,
+  getStockinOut
 );
 
 module.exports = Router;

@@ -261,3 +261,50 @@ exports.getUserAllPartDetail = async (req, res) => {
     res.status(400).send("Something went wrong.");
   }
 };
+
+exports.getStockinOut = async (req, res) => {
+  try {
+    let partDetail;
+    if (req.body.stock === "in") {
+      partDetail = await PartDetail.find({
+        userId: req.body.userId,
+        inStock: { $ne: 0 },
+      });
+    } else if (req.body.stock === "out") {
+      partDetail = await PartDetail.find({
+        userId: req.body.userId,
+        inStock: 0,
+      });
+    }
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.limit) || 5;
+    const skip = (page - 1) * pageSize;
+    const total = partDetail.length;
+    const totalPages = Math.ceil(total / pageSize);
+    const result = partDetail.slice(skip, skip + pageSize);
+
+    if (page > totalPages) {
+      return res.status(200).json({
+        status: false,
+        message: "No data found",
+      });
+    }
+    if (partDetail.length === 0) {
+      res
+        .status(200)
+        .json({ message: "No part find.", data: [], success: false });
+    } else {
+      res.status(200).json({
+        status: true,
+        message: "Get all user part.",
+        count: result.length,
+        page,
+        totalPages,
+        data: result,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("Something went wrong.");
+  }
+};
