@@ -23,6 +23,7 @@ const repairTag = require("./routers/repairTagRouter");
 const transaction = require("./routers/transactionRouter");
 const employee = require("./routers/employeeRoute");
 const account = require("./routers/accountRoute");
+const plan = require("./routers/planRoute");
 const port = process.env.PORT;
 
 
@@ -65,5 +66,6 @@ app.use("/api/v1", car);
 app.use("/api/v1", parts);
 app.use("/api/v1", employee);
 app.use("/api/v1", account);
+app.use("/api/v1", plan);
 
 app.listen(port, () => console.log(`App listening on port ${port}.`));
