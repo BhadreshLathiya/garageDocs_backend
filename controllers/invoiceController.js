@@ -20,7 +20,7 @@ exports.createInvoice = async (req, res) => {
 exports.getSingleInvoiceDetail = async (req, res) => {
   try {
     const id = req.params.id;
-    const invoice = await Invoice.findById(id).populate("userId");
+    const invoice = await Invoice.findById(id);
     res.status(200).json({
       success: true,
       message: "get single invoice detail.",
