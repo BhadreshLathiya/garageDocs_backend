@@ -5,6 +5,11 @@ const sendEmail = require("../middelware/sendMail");
 const Part = require("../models/partModel");
 const PartDetail = require("../models/partDetailModel");
 
+const client = require("twilio")(
+  process.env.TWILIO_SID,
+  process.env.TWILIO_AUTH_TOKEN
+);
+
 // user google login
 exports.loginWithGoogle = async (req, res) => {
   try {
@@ -41,29 +46,32 @@ exports.loginWithGoogle = async (req, res) => {
       await data.save();
 
       const adminParts = await Part.find();
-      const adminData = JSON.parse(JSON.stringify(adminParts));
-      adminData.forEach(async (part) => {
-        await PartDetail.create({
-          partName: part.partName,
-          partType: null,
-          partNumber: 0,
-          partPurchasePrice: 0,
-          partSalePrice: 0,
-          inStock: 0,
-          minStock: 0,
-          rack: null,
-          hsn: null,
-          shopName: null,
-          workShopName: null,
-          workShopAddress: null,
-          discription: null,
-          userId: data._id,
+      if (adminParts.length > 0) {
+        const adminData = JSON.parse(JSON.stringify(adminParts));
+        adminData.forEach(async (part) => {
+          await PartDetail.create({
+            partName: part.partName,
+            partType: null,
+            partNumber: 0,
+            partPurchasePrice: 0,
+            partSalePrice: 0,
+            inStock: 0,
+            minStock: 0,
+            rack: null,
+            hsn: null,
+            shopName: null,
+            workShopName: null,
+            workShopAddress: null,
+            discription: null,
+            userId: data._id,
+          });
         });
-      });
+      }
+
       res.status(200).send({
         success: true,
         message: "user create successfully",
-        user: adminParts,
+        user: data,
       });
     }
   } catch (error) {
@@ -108,26 +116,29 @@ exports.loginWithFacebook = async (req, res) => {
         expiresIn: process.env.JWT_EXPIRE,
       });
       await data.save();
-      const adminParts = await Part.find();
-      const adminData = JSON.parse(JSON.stringify(adminParts));
-      adminData.forEach(async (part) => {
-        await PartDetail.create({
-          partName: part.partName,
-          partType: null,
-          partNumber: 0,
-          partPurchasePrice: 0,
-          partSalePrice: 0,
-          inStock: 0,
-          minStock: 0,
-          rack: null,
-          hsn: null,
-          shopName: null,
-          workShopName: null,
-          workShopAddress: null,
-          discription: null,
-          userId: data._id,
-        });
-      });
+      // const adminParts = await Part.find();
+      // if (adminParts.length > 0) {
+      //   const adminData = JSON.parse(JSON.stringify(adminParts));
+      //   adminData.forEach(async (part) => {
+      //     await PartDetail.create({
+      //       partName: part.partName,
+      //       partType: null,
+      //       partNumber: 0,
+      //       partPurchasePrice: 0,
+      //       partSalePrice: 0,
+      //       inStock: 0,
+      //       minStock: 0,
+      //       rack: null,
+      //       hsn: null,
+      //       shopName: null,
+      //       workShopName: null,
+      //       workShopAddress: null,
+      //       discription: null,
+      //       userId: data._id,
+      //     });
+      //   });
+      // }
+
       res.status(200).send({
         success: true,
         message: "user create successfully",
@@ -199,6 +210,18 @@ exports.simpleLogin = async (req, res) => {
     console.log(error);
     res.status(400).send("Somthing went wrong.");
   }
+};
+
+// otp login
+exports.getOtp = async (req, res) => {
+  client.messages
+    .create({
+      body: "Hello, this is a test message from your Twilio number!",
+      from: "your_twilio_phone_number",
+      to: "recipient_phone_number",
+    })
+    .then((message) => res.send(`Message sent with SID: ${message.sid}`))
+    .catch((error) => res.status(500).send(`Error: ${error.message}`));
 };
 
 // verify otp

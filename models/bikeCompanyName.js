@@ -4,13 +4,13 @@ const bikeCompanyNameSchema = new mongoose.Schema({
   companyName: {
     type: String,
   },
-  type:{
-    type:String,
-    default:"car"
+  type: {
+    type: String,
+    default: "bike",
   },
-  bikeModel:{
-    type:Array
-  }
+  bikeModel: {
+    type: Array,
+  },
 });
 bikeCompanyNameSchema.set("timestamps", true);
 module.exports = mongoose.model("bikeCompanyName", bikeCompanyNameSchema);
