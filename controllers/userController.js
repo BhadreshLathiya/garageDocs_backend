@@ -156,56 +156,53 @@ exports.loginWithFacebook = async (req, res) => {
 //simple login
 exports.simpleLogin = async (req, res) => {
   try {
-    const data = await User.findOne({ email: req.body.email });
+    const data = await User.findOne({ mobileNo: req.body.mobileNo });
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
     if (!data) {
-      const otp = Math.floor(100000 + Math.random() * 900000).toString();
-      const user = await User.create({
-        email: req.body.email,
+      await User.create({
+        mobileNo: req.body.mobileNo,
         otp: otp,
         isVerify: false,
       });
-      sendEmail(
-        req.body.email,
-        "Verify Your OTP",
-        `your otp is ${otp} Do not share it`
-      );
-      res.status(200).json({
-        success: true,
-        message: `email send successfully to ${req.body.email}`,
+      const adminParts = await Part.find();
+      const adminData = JSON.parse(JSON.stringify(adminParts));
+      adminData.forEach(async (part) => {
+        await PartDetail.create({
+          partName: part.partName,
+          partType: null,
+          partNumber: 0,
+          partPurchasePrice: 0,
+          partSalePrice: 0,
+          inStock: 0,
+          minStock: 0,
+          rack: null,
+          hsn: null,
+          shopName: null,
+          workShopName: null,
+          workShopAddress: null,
+          discription: null,
+          userId: data._id,
+        });
       });
     } else {
-      const data = await User.findOne({ email: req.body.email });
-      data.token = jwt.sign({ id: data._id }, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRE,
-      });
+      data.otp = otp;
       await data.save();
-      if (data.isVerify) {
-        res.status(200).json({
-          success: true,
-          message: "user login successfully",
-          data: data,
-        });
-      } else {
-        const otp = Math.floor(100000 + Math.random() * 900000).toString();
-        const user = await User.findByIdAndUpdate(
-          data._id,
-          {
-            otp: otp,
-            isVerify: false,
-          },
-          { new: true }
-        );
-        sendEmail(
-          req.body.email,
-          "Verify Your OTP",
-          `your otp is ${otp} Do not share it`
-        );
-        res.status(200).json({
-          success: true,
-          message: `email send successfully to ${req.body.email}`,
-        });
-      }
     }
+
+    client.messages.create({
+      body: `Your login otp is ${otp}`,
+      from: "+447782389238",
+      to: req.body.mobileNo,
+    });
+    // sendEmail(
+    //   req.body.email,
+    //   "Verify Your OTP",
+    //   `your otp is ${otp} Do not share it`
+    // );
+    res.status(200).json({
+      success: true,
+      message: `otp send successfully to ${req.body.mobileNo}`,
+    });
   } catch (error) {
     console.log(error);
     res.status(400).send("Somthing went wrong.");
@@ -213,76 +210,49 @@ exports.simpleLogin = async (req, res) => {
 };
 
 // otp login
-exports.getOtp = async (req, res) => {
-  client.messages
-    .create({
-      body: "Hello, this is a test message from your Twilio number!",
-      from: "your_twilio_phone_number",
-      to: "recipient_phone_number",
-    })
-    .then((message) => res.send(`Message sent with SID: ${message.sid}`))
-    .catch((error) => res.status(500).send(`Error: ${error.message}`));
-};
+// exports.getOtp = async (req, res) => {
+//   client.messages
+//     .create({
+//       body: "Hello, this is a test message from your Twilio number!",
+//       from: "your_twilio_phone_number",
+//       to: "recipient_phone_number",
+//     })
+//     .then((message) => res.send(`Message sent with SID: ${message.sid}`))
+//     .catch((error) => res.status(500).send(`Error: ${error.message}`));
+// };
 
 // verify otp
 exports.verifyOtp = async (req, res) => {
   try {
-    const data = await User.findOne({ email: req.body.email });
-    if (data.isVerify) {
-      res.status(200).json({
-        success: true,
-        message: `you are already verify please login`,
-      });
-    } else {
-      const date1 = new Date(data.updatedAt); // Replace with your desired date and time
-      const date2 = new Date();
-      const timeDifference = date2.getTime() - date1.getTime();
-      const fiveMinutesInMilliseconds = 5 * 60 * 1000;
-      if (timeDifference < fiveMinutesInMilliseconds) {
-        if (data.otp === req.body.otp) {
-          data.isVerify = true;
-          data.otp = null;
-          data.token = jwt.sign({ id: data._id }, process.env.JWT_SECRET, {
-            expiresIn: process.env.JWT_EXPIRE,
-          });
-          await data.save();
-          const adminParts = await Part.find();
-          const adminData = JSON.parse(JSON.stringify(adminParts));
-          adminData.forEach(async (part) => {
-            await PartDetail.create({
-              partName: part.partName,
-              partType: null,
-              partNumber: 0,
-              partPurchasePrice: 0,
-              partSalePrice: 0,
-              inStock: 0,
-              minStock: 0,
-              rack: null,
-              hsn: null,
-              shopName: null,
-              workShopName: null,
-              workShopAddress: null,
-              discription: null,
-              userId: data._id,
-            });
-          });
-          res.status(200).json({
-            success: true,
-            data: data,
-            message: `login successfully`,
-          });
-        } else {
-          res.status(400).json({
-            success: false,
-            message: `invalid otp`,
-          });
-        }
+    const data = await User.findOne({ mobileNo: req.body.mobileNo });
+    const date1 = new Date(data.updatedAt); // Replace with your desired date and time
+    const date2 = new Date();
+    const timeDifference = date2.getTime() - date1.getTime();
+    const fiveMinutesInMilliseconds = 5 * 60 * 1000;
+    if (timeDifference < fiveMinutesInMilliseconds) {
+      if (data.otp === req.body.otp) {
+        data.isVerify = true;
+        data.otp = null;
+        data.token = jwt.sign({ id: data._id }, process.env.JWT_SECRET, {
+          expiresIn: process.env.JWT_EXPIRE,
+        });
+        await data.save();
+        res.status(200).json({
+          success: true,
+          data: data,
+          message: `login successfully`,
+        });
       } else {
         res.status(400).json({
           success: false,
-          message: `otp expire`,
+          message: `invalid otp`,
         });
       }
+    } else {
+      res.status(400).json({
+        success: false,
+        message: `otp expire`,
+      });
     }
   } catch (error) {
     console.log(error);
@@ -293,7 +263,7 @@ exports.verifyOtp = async (req, res) => {
 //resend otp
 exports.resendOtp = async (req, res) => {
   try {
-    const data = await User.findOne({ email: req.body.email });
+    const data = await User.findOne({ mobileNo: req.body.mobileNo });
     if (!data) {
       res.status(400).json({
         success: false,
@@ -303,14 +273,19 @@ exports.resendOtp = async (req, res) => {
       const otp = Math.floor(100000 + Math.random() * 900000).toString();
       data.otp = otp;
       await data.save();
-      sendEmail(
-        req.body.email,
-        "Verify Your OTP",
-        `your otp is ${otp} Do not share it`
-      );
+      // sendEmail(
+      //   req.body.email,
+      //   "Verify Your OTP",
+      //   `your otp is ${otp} Do not share it`
+      // );
+      client.messages.create({
+        body: `Your login otp is ${otp}`,
+        from: "+447782389238",
+        to: req.body.mobileNo,
+      });
       res.status(200).json({
         success: true,
-        message: `email send successfully to ${req.body.email}`,
+        message: `otp send successfully to ${req.body.mobileNo}`,
       });
     }
   } catch (error) {
