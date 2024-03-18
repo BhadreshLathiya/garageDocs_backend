@@ -6,6 +6,10 @@ const transactionSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  plan: {
+    type: mongoose.Schema.ObjectId,
+    ref: "Plan",
+  },
   name: {
     type: String,
     require: true,

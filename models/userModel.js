@@ -64,9 +64,15 @@ const userSchema = new mongoose.Schema({
   },
   endDate: {
     type: Date,
+    default: () => {
+      const currentDate = new Date();
+      currentDate.setDate(currentDate.getDate() + 30);
+      return currentDate;
+    },
   },
   startDate: {
     type: Date,
+    default: Date.now(),
   },
   repairOrder: {
     type: {

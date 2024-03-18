@@ -4,7 +4,7 @@ const {
   getTransaction,
   getTransactionBySearch,
   getTotalAmmount,
-  getUserPlane,
+  getUserplan,
   updateTransaction,
 } = require("../controllers/TransacationController");
 
@@ -15,7 +15,7 @@ router.post("/add/transaction", verifyToken, addTransaction);
 router.get("/get/transaction/history", verifyToken, getTransaction);
 router.get("/search/transaction", verifyToken, getTransactionBySearch);
 router.get("/total/ammount/transaction", getTotalAmmount);
-router.post("/user/plane", getUserPlane);
+router.post("/user/plan", getUserplan);
 router.put("/user/update_transaction/:id", verifyToken, updateTransaction);
 
 // router.get("/allindices",verifyToken,allIndices)

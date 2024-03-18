@@ -10,7 +10,7 @@ exports.insertSubscription = async (req, res) => {
     if (dataFind.length === 1) {
       return res.status(200).json({
         success: false,
-        message: "subscription plane already exist",
+        message: "subscription plan already exist",
       });
     }
     const sniper = await Subscription.create({
@@ -20,7 +20,7 @@ exports.insertSubscription = async (req, res) => {
     });
     res.status(200).json({
       success: true,
-      message: "subscription plane added succesfully...",
+      message: "subscription plan added succesfully...",
       data: sniper,
     });
     console.log(sniper, "insert Subscripation plan");
@@ -29,12 +29,12 @@ exports.insertSubscription = async (req, res) => {
   }
 };
 
-// delete subscription plane
-exports.deletePlane = async (req, res) => {
+// delete subscription plan
+exports.deleteplan = async (req, res) => {
   try {
     await Subscription.findByIdAndDelete(req.params.id);
     res.status(200).json({
-      message: "subscription plane delete succesfully...",
+      message: "subscription plan delete succesfully...",
     });
     console.log("Delete Subscripation plan");
   } catch (error) {
@@ -42,14 +42,14 @@ exports.deletePlane = async (req, res) => {
   }
 };
 
-// get all plane
+// get all plan
 exports.allPlan = async (req, res) => {
   try {
     const plans = await Subscription.find({});
     console.log(plans, "plans");
     res.status(200).json({
       success: true,
-      message: "subscription plane listing succesfully...",
+      message: "subscription plan listing succesfully...",
       data: plans,
     });
   } catch (error) {
@@ -58,8 +58,8 @@ exports.allPlan = async (req, res) => {
   }
 };
 
-//update plane
-exports.updatePlane = async (req, res) => {
+//update plan
+exports.updateplan = async (req, res) => {
   try {
     const id = req.params.id;
 
@@ -70,7 +70,7 @@ exports.updatePlane = async (req, res) => {
     });
     res.status(200).json({
       success: true,
-      message: "subscription plane listing succesfully...",
+      message: "subscription plan listing succesfully...",
       data: data,
     });
     console.log(data, "update Plan in subscripation");
@@ -80,7 +80,7 @@ exports.updatePlane = async (req, res) => {
 };
 
 // searchn subscription
-exports.getPlaneBySearch = async (req, res) => {
+exports.getplanBySearch = async (req, res) => {
   try {
     let ammount = req.query.search;
     ammount = ammount.split(" ").join("").trim();
@@ -93,7 +93,7 @@ exports.getPlaneBySearch = async (req, res) => {
       message: "subscription listing successfully.....",
       data: user,
     });
-    console.log(user, "get plane by search ");
+    console.log(user, "get plan by search ");
   } catch (error) {
     res.send("error");
   }

@@ -3,8 +3,8 @@ const User = require("../models//userModel");
 
 exports.addTransaction = async (req, res) => {
   try {
-    const { user, plane, transactionId } = req.body;
-    // const subscription = await Subscription.findById(plane);
+    const { user, plan, transactionId } = req.body;
+    // const subscription = await Subscription.findById(plan);
     const userData = await User.findById(user);
     // console.log(userData)
     let today = new Date();
@@ -22,10 +22,10 @@ exports.addTransaction = async (req, res) => {
           startDate: today,
           endDate: date,
           duration: 12,
-          transactionId: req.body.transactionId,
+          transactionId: transactionId,
+          plan:plan
         });
         await User.findByIdAndUpdate(userData._id, {
-          isExpire: false,
           startDate: today,
           endDate: date,
         });
@@ -57,7 +57,7 @@ exports.addTransaction = async (req, res) => {
       });
       res.status(200).json({
         success: true,
-        message: "plane added succesfully...",
+        message: "plan added succesfully...",
         data: transaction,
       });
     }
@@ -84,7 +84,7 @@ exports.updateTransaction = async (req, res) => {
     const transaction = await Transaction.findById(_id);
     res.status(200).json({
       success: true,
-      message: "plane added succesfully...",
+      message: "plan added succesfully...",
       data: transaction,
     });
   } catch (error) {
@@ -174,13 +174,13 @@ exports.getTotalAmmount = async (req, res) => {
 };
 
 // all transaction of user
-exports.getUserPlane = async (req, res) => {
+exports.getUserplan = async (req, res) => {
   try {
     const data = await Transaction.find({ user: req.body.user })
       .sort({ createdAt: -1 })
       .limit(1);
     res.status(200).send({
-      message: "user plane listing successfully",
+      message: "user plan listing successfully",
       data: data,
     });
   } catch (error) {

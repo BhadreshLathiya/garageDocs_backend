@@ -311,7 +311,6 @@ exports.getSingleUserDetail = async (req, res) => {
 
 exports.updateSingleUserDetail = async (req, res) => {
   try {
-    console.log(req.body.startDate);
     const id = req.params.id;
     const user = await User.findById(id);
 
@@ -335,6 +334,15 @@ exports.updateSingleUserDetail = async (req, res) => {
     }
     if (req.body.startDate) {
       user.startDate = req.body.startDate;
+    }
+    if (req.body.email) {
+      const userFind = await User.findOne({ email: email });
+      if (userFind) {
+        return res
+          .status(400)
+          .json({ message: "Email already exist", success: false });
+      }
+      user.email = req.body.startDate;
     }
     if (req.body.endDate) {
       user.endDate = req.body.endDate;
