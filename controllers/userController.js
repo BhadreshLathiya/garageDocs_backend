@@ -336,13 +336,13 @@ exports.updateSingleUserDetail = async (req, res) => {
       user.startDate = req.body.startDate;
     }
     if (req.body.email) {
-      const userFind = await User.findOne({ email: email });
+      const userFind = await User.findOne({ email: req.body.email });
       if (userFind) {
         return res
           .status(400)
           .json({ message: "Email already exist", success: false });
       }
-      user.email = req.body.startDate;
+      user.email = req.body.email;
     }
     if (req.body.endDate) {
       user.endDate = req.body.endDate;

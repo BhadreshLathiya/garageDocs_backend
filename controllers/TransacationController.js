@@ -23,7 +23,7 @@ exports.addTransaction = async (req, res) => {
           endDate: date,
           duration: 12,
           transactionId: transactionId,
-          plan:plan
+          plan: plan,
         });
         await User.findByIdAndUpdate(userData._id, {
           startDate: today,
