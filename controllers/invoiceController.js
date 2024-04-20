@@ -1,11 +1,40 @@
 const mongoose = require("mongoose");
 const Invoice = require("../models/invoiceModel");
 
+const priceUpdate = (data) => {
+  // Calculate total service price
+  const totalServicePrice = data.services.reduce(
+    (total, service) => total + service.price,
+    0
+  );
+
+  // Calculate total package price
+  const totalPackagePrice = data.selectPackage.reduce(
+    (total, package) => total + package.price,
+    0
+  );
+
+  // Calculate total package price
+  const totalPartsPrice = data.spareParts.reduce(
+    (total, package) => total + package.price,
+    0
+  );
+
+  // Calculate total price
+  return totalServicePrice + totalPackagePrice + totalPartsPrice;
+};
 exports.createInvoice = async (req, res) => {
   try {
     const id = req.params.id;
-    const invoiceData = req.body;
     const invoice = await Invoice.create({ ...req.body, userId: id });
+    const invoiceData = await Invoice.findById(invoice._id)
+      .populate("repiarTag")
+      .populate("services")
+      .populate("spareParts")
+      .populate("selectPackage");
+    const data = priceUpdate(invoiceData);
+    invoice.totalPayment = data;
+    await invoice.save();
     res.status(200).json({
       success: true,
       message: "invoice create successfully.",
@@ -20,7 +49,11 @@ exports.createInvoice = async (req, res) => {
 exports.getSingleInvoiceDetail = async (req, res) => {
   try {
     const id = req.params.id;
-    const invoice = await Invoice.findById(id);
+    const invoice = await Invoice.findById(id)
+      .populate("repiarTag")
+      .populate("services")
+      .populate("spareParts")
+      .populate("selectPackage");
     res.status(200).json({
       success: true,
       message: "get single invoice detail.",
@@ -49,78 +82,84 @@ exports.deleteSingleInvoiceDetail = async (req, res) => {
 exports.updateInvoice = async (req, res) => {
   try {
     const id = req.params.id;
-    const invoiceData = req.body;
 
-    if (
-      invoiceData.services ||
-      invoiceData.spareParts ||
-      invoiceData.selectPackage
-    ) {
-      for (const itemType of ["services", "spareParts", "selectPackage"]) {
-        if (invoiceData[itemType]) {
-          for (const item of invoiceData[itemType]) {
-            const itemId = mongoose.Types.ObjectId(item._id);
-            delete item._id; // Remove _id to avoid circular reference
-            await Invoice.updateOne(
-              { _id: id },
-              { $push: { [itemType]: { $each: [{ _id: itemId, ...item }] } } }
-            );
-          }
-        }
-      }
+    // if (
+    //   invoiceData.services ||
+    //   invoiceData.spareParts ||
+    //   invoiceData.selectPackage
+    // ) {
+    //   for (const itemType of ["services", "spareParts", "selectPackage"]) {
+    //     if (invoiceData[itemType]) {
+    //       for (const item of invoiceData[itemType]) {
+    //         const itemId = mongoose.Types.ObjectId(item._id);
+    //         delete item._id; // Remove _id to avoid circular reference
+    //         await Invoice.updateOne(
+    //           { _id: id },
+    //           { $push: { [itemType]: { $each: [{ _id: itemId, ...item }] } } }
+    //         );
+    //       }
+    //     }
+    //   }
 
-      const updatedInvoice = await Invoice.findById(id);
-      res.status(200).json({
-        success: true,
-        message: "Invoice updated successfully.",
-        data: updatedInvoice,
-      });
-    } else if (
-      invoiceData.servicesId ||
-      invoiceData.sparePartsId ||
-      invoiceData.selectPackageId
-    ) {
-      for (const itemType of ["services", "spareParts", "selectPackage"]) {
-        if (invoiceData[`${itemType}Id`]) {
-          const updateField = `${itemType}.$`;
+    //   const updatedInvoice = await Invoice.findById(id);
+    //   res.status(200).json({
+    //     success: true,
+    //     message: "Invoice updated successfully.",
+    //     data: updatedInvoice,
+    //   });
+    // } else if (
+    //   invoiceData.servicesId ||
+    //   invoiceData.sparePartsId ||
+    //   invoiceData.selectPackageId
+    // ) {
+    //   for (const itemType of ["services", "spareParts", "selectPackage"]) {
+    //     if (invoiceData[`${itemType}Id`]) {
+    //       const updateField = `${itemType}.$`;
 
-          await Invoice.updateOne(
-            { [`${itemType}._id`]: invoiceData[`${itemType}Id`] },
-            {
-              $set: {
-                [updateField]: {
-                  [`${itemType}.Name`]: invoiceData[`${itemType}.Name`],
-                  price: invoiceData.price,
-                  tax: invoiceData.tax,
-                  Quantity: invoiceData.Quantity,
-                  discount: invoiceData.discount,
-                  total: invoiceData.total,
-                },
-              },
-            }
-          );
-        }
-      }
+    //       await Invoice.updateOne(
+    //         { [`${itemType}._id`]: invoiceData[`${itemType}Id`] },
+    //         {
+    //           $set: {
+    //             [updateField]: {
+    //               [`${itemType}.Name`]: invoiceData[`${itemType}.Name`],
+    //               price: invoiceData.price,
+    //               tax: invoiceData.tax,
+    //               Quantity: invoiceData.Quantity,
+    //               discount: invoiceData.discount,
+    //               total: invoiceData.total,
+    //             },
+    //           },
+    //         }
+    //       );
+    //     }
+    //   }
 
-      const updatedInvoice = await Invoice.findById(id);
-      res.status(200).json({
-        success: true,
-        message: "Invoice updated successfully.",
-        data: updatedInvoice,
-      });
-    } else {
-      await Invoice.findByIdAndUpdate(id, invoiceData, {
-        new: true,
-        runValidators: true,
-      });
+    //   const updatedInvoice = await Invoice.findById(id);
+    //   res.status(200).json({
+    //     success: true,
+    //     message: "Invoice updated successfully.",
+    //     data: updatedInvoice,
+    //   });
+    // } else {
+    await Invoice.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true,
+    });
 
-      const updatedInvoice = await Invoice.findById(id);
-      res.status(200).json({
-        success: true,
-        message: "Invoice updated successfully.",
-        data: updatedInvoice,
-      });
-    }
+    const invoiceData = await Invoice.findById(id)
+      .populate("repiarTag")
+      .populate("services")
+      .populate("spareParts")
+      .populate("selectPackage");
+    const data = priceUpdate(invoiceData);
+    invoiceData.totalPayment = data;
+    await invoiceData.save();
+    res.status(200).json({
+      success: true,
+      message: "Invoice updated successfully.",
+      data: invoiceData,
+    });
+    // }
   } catch (error) {
     console.log(error);
     res.status(400).send("Something went wrong.");

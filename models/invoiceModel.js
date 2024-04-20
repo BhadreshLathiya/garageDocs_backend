@@ -43,73 +43,28 @@ const invoiceSchema = new mongoose.Schema({
   fuelIndicator: {
     type: String,
   },
-  repiarTag: {
-    type: Array,
-  },
+  repiarTag: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "repairTag",
+    },
+  ],
   services: [
     {
-      servicesName: {
-        type: String,
-      },
-      price: {
-        type: Number,
-      },
-      tax: {
-        type: Number,
-      },
-      Quantity: {
-        type: Number,
-      },
-      discount: {
-        type: Number,
-      },
-      total: {
-        type: Number,
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Service",
     },
   ],
   spareParts: [
     {
-      sparePartsName: {
-        type: String,
-      },
-      price: {
-        type: Number,
-      },
-      tax: {
-        type: Number,
-      },
-      Quantity: {
-        type: Number,
-      },
-      discount: {
-        type: Number,
-      },
-      total: {
-        type: Number,
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Part",
     },
   ],
   selectPackage: [
     {
-      selectPackagesName: {
-        type: String,
-      },
-      price: {
-        type: Number,
-      },
-      tax: {
-        type: Number,
-      },
-      Quantity: {
-        type: Number,
-      },
-      discount: {
-        type: Number,
-      },
-      total: {
-        type: Number,
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "ServicePackage",
     },
   ],
   isGst: {
