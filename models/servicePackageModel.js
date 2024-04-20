@@ -8,7 +8,7 @@ const servicePackageSchema = new mongoose.Schema({
     type: Array,
   },
   price:{
-    type: String,
+    type: Number,
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,

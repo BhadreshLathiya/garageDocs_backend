@@ -8,6 +8,7 @@ exports.addServiceforSingleUser = async (req, res) => {
       serviceName: serviceData.serviceName,
       userId: id,
       userType: serviceData.userType,
+      price: serviceData.price,
     });
     res.status(200).json({
       success: true,
@@ -34,7 +35,7 @@ exports.getAllServiceforSingleUser = async (req, res) => {
     const result = newData.slice(skip, skip + pageSize);
     if (page > totalPages) {
       return res.status(200).json({
-        status:false,
+        status: false,
         message: "No data found",
       });
     }
@@ -112,14 +113,15 @@ exports.serviceSearch = async (req, res) => {
     event = event.split(" ").join("").trim();
     const regfirsname = new RegExp(event, "i"); //this is for we serch meet or Meet or MEET all are same
     // console.log(regfirsname);
-    let service = await Service.find({ serviceName: regfirsname, userId: id }).limit(
-      10
-    );
+    let service = await Service.find({
+      serviceName: regfirsname,
+      userId: id,
+    }).limit(10);
     let servicefind = await Service.find({
       serviceName: regfirsname,
       userType: 1,
     }).limit(10);
-    console.log(servicefind)
+    console.log(servicefind);
     const find2 = [...service, ...servicefind];
     // console.log(user)
     res.status(200).send({

@@ -8,6 +8,9 @@ const serviceSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  price:{
+    type: Number,
+  },
   userType:{
     type:Number
   }
