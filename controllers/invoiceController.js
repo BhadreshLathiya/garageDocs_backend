@@ -2,24 +2,28 @@ const mongoose = require("mongoose");
 const Invoice = require("../models/invoiceModel");
 
 const priceUpdate = (data) => {
+  console.log(data,"data")
   // Calculate total service price
-  const totalServicePrice = data.services.reduce(
+  const totalServicePrice = data.services?.reduce(
     (total, service) => total + service.price,
     0
   );
 
   // Calculate total package price
-  const totalPackagePrice = data.selectPackage.reduce(
+  const totalPackagePrice = data?.selectPackage?.reduce(
     (total, package) => total + package.price,
     0
   );
 
   // Calculate total package price
-  const totalPartsPrice = data.spareParts.reduce(
+  const totalPartsPrice = data?.spareParts?.reduce(
     (total, package) => total + package.price,
     0
   );
-
+  console.log(totalServicePrice,"totalServicePrice")
+  console.log(totalPackagePrice,"totalPackagePrice")
+  console.log(totalPartsPrice,"totalPartsPrice")
+  
   // Calculate total price
   return totalServicePrice + totalPackagePrice + totalPartsPrice;
 };
@@ -267,7 +271,7 @@ exports.getStatusWiseInvoiceForSingleUser = async (req, res) => {
     if (data.length === 0) {
       res
         .status(200)
-        .json({ message: "No job find.", data: [], success: false });
+        .json({ message: "No job find.", data: [], status: false });
     } else {
       res.status(200).json({
         status: true,
