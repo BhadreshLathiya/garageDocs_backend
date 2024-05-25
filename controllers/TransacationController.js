@@ -116,7 +116,7 @@ exports.getTransaction = async (req, res) => {
     data = data.skip(skip).limit(pageSize);
     if (page > totalPages) {
       return res.status(201).json({
-        success: false,
+        status: false,
         message: "No data found",
       });
     }

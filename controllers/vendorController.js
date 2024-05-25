@@ -66,7 +66,7 @@ exports.getAllVendorForSingleUser = async (req, res) => {
     if (data.length === 0) {
       res
         .status(200)
-        .json({ message: "No job find.", data: [], success: false });
+        .json({ message: "No job find.", data: [], status: false });
     } else {
       res.status(200).json({
         status: true,

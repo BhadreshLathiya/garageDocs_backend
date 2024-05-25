@@ -232,7 +232,7 @@ exports.allInvoiceforSingleUser = async (req, res) => {
     if (data.length === 0) {
       res
         .status(200)
-        .json({ message: "No job find.", data: [], success: false });
+        .json({ message: "No job find.", data: [], status: false });
     } else {
       res.status(200).json({
         status: true,
@@ -334,7 +334,7 @@ exports.getInvoiceBySearch = async (req, res) => {
     }).sort({ createdAt: -1 });
 
     res.status(200).send({
-      success: true,
+      status: true,
       message: "Event listing successful...",
       data: user,
     });
