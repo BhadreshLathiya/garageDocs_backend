@@ -33,28 +33,28 @@ Router.put(
 );
 Router.put(
   "/delete_single_parts_or_service_from_invoice/:id",
-  // verifyToken,
+  verifyToken,
   deleteSinglePartsOrServiceFromInvoice
 );
 
 Router.get(
   "/get_all_invoice_for_single_user/:id",
-  // verifyToken,
+  verifyToken,
   allInvoiceforSingleUser
 );
 
 Router.get(
   "/get_status_wise_invoice_for_single_user/:id",
-  // verifyToken,
+  verifyToken,
   getStatusWiseInvoiceForSingleUser
 );
 
 Router.get("/status_counting_invoice/:id", 
-// verifyToken,
+verifyToken,
  statusCountingInvoice);
 
 Router.get("/invoice/search/:id", 
-// verifyToken,
+verifyToken,
  getInvoiceBySearch);
 
 module.exports = Router;

@@ -100,8 +100,8 @@ const invoiceSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  isPaymentStatus: {
-    type: String,
+  isPaymentDone: {
+    type: Number,
   },
   checkList: {
     type: Array,

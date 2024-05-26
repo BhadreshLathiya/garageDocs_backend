@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Invoice = require("../models/invoiceModel");
 
 const priceUpdate = (data) => {
-  console.log(data,"data")
+  console.log(data, "data");
   // Calculate total service price
   const totalServicePrice = data.services?.reduce(
     (total, service) => total + service.price,
@@ -20,10 +20,10 @@ const priceUpdate = (data) => {
     (total, package) => total + package.price,
     0
   );
-  console.log(totalServicePrice,"totalServicePrice")
-  console.log(totalPackagePrice,"totalPackagePrice")
-  console.log(totalPartsPrice,"totalPartsPrice")
-  
+  console.log(totalServicePrice, "totalServicePrice");
+  console.log(totalPackagePrice, "totalPackagePrice");
+  console.log(totalPartsPrice, "totalPartsPrice");
+
   // Calculate total price
   return totalServicePrice + totalPackagePrice + totalPartsPrice;
 };
@@ -265,13 +265,22 @@ exports.getStatusWiseInvoiceForSingleUser = async (req, res) => {
     if (page > totalPages) {
       return res.status(200).json({
         status: false,
-        message: "No data found",
+        message: "No Job found",
+        count: 0,
+        page: 0,
+        totalPages: 0,
+        data: [],
       });
     }
     if (data.length === 0) {
-      res
-        .status(200)
-        .json({ message: "No job find.", data: [], status: false });
+      res.status(200).json({
+        status: false,
+        message: "No Job found",
+        count: 0,
+        page: 0,
+        totalPages: 0,
+        data: [],
+      });
     } else {
       res.status(200).json({
         status: true,
@@ -314,6 +323,7 @@ exports.getInvoiceBySearch = async (req, res) => {
   try {
     const id = req.params.id;
     let event = req.query.search;
+    let status = req.query.status;
     event = event.split(" ").join("").trim();
 
     const regEvent = new RegExp(event, "i");
@@ -330,12 +340,27 @@ exports.getInvoiceBySearch = async (req, res) => {
           ],
         },
         { userId: id },
+        { status: status },
       ],
-    }).sort({ createdAt: -1 });
-
-    res.status(200).send({
+    })
+      .sort({ createdAt: -1 })
+      .limit(20);
+    if (user.length === 0) {
+      return res.status(200).json({
+        status: false,
+        message: "No Order found",
+        count: 0,
+        page: 0,
+        totalPages: 0,
+        data: [],
+      });
+    }
+    res.status(200).json({
       status: true,
-      message: "Event listing successful...",
+      message: "Job listing successful",
+      count: 0,
+      page: 0,
+      totalPages: 0,
       data: user,
     });
   } catch (error) {
