@@ -125,7 +125,11 @@ exports.serviceSearch = async (req, res) => {
     const find2 = [...service, ...servicefind];
     // console.log(user)
     res.status(200).send({
-      message: "event listing successfully.....",
+      status: true,
+      message: "Service listing successfully",
+      count: 0,
+      page: 0,
+      totalPages: 0,
       data: find2,
     });
     // console.log(user, "single Admin search");
