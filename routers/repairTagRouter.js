@@ -36,6 +36,6 @@ Router.delete(
   verifyToken,
   deleteSingleRepairTagDetailforsingleUser
 );
-Router.get("/search_service_form_single_user/:id", verifyToken, RepairTagSearch);
+Router.get("/search_repairtag_form_single_user/:id", verifyToken, RepairTagSearch);
 
 module.exports = Router;
