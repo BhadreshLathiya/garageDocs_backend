@@ -1,21 +1,25 @@
 const Invoice = require("../models/invoiceModel");
+const mongoose = require('mongoose');
+
 
 exports.sumOfPrice = async (req, res) => {
   // console.log(req.params.id)
+  const userId = mongoose.Types.ObjectId(req.params.id); 
   try {
     const total = await Invoice.aggregate([
       {
-        $match: { userId: req.params.id },
+        $match: { userId: userId },
       },
       {
         $group: {
           _id: null,
           receivePayment: { $sum: "$receivePayment" },
           duePayment: { $sum: "$duePayment" },
+          totalPayment: { $sum: "$totalPayment" },
         },
       },
     ]);
-    console.log(total, "total");
+    console.log(total[0])
     res.status(200).json({
       success: true,
       message: "sum listing successfully",

@@ -5,7 +5,7 @@ exports.addRepairTagforSingleUser = async (req, res) => {
     const id = req.params.id;
     const repairTagData = req.body;
     const repairTag = await RepairTag.create({
-      repairTagName: repairTagData.repairTagName, 
+      repairTagName: repairTagData.repairTagName,
       userId: id,
       userType: repairTagData.userType,
       price: repairTagData.price,
@@ -93,11 +93,11 @@ exports.updateSingleRepairTagDetailforsingleUser = async (req, res) => {
 exports.deleteSingleRepairTagDetailforsingleUser = async (req, res) => {
   try {
     const id = req.params.id;
-    await RepairTag.findByIdAndDelete(id);
+    const tag = await RepairTag.findByIdAndDelete(id);
     res.status(200).json({
       success: true,
       message: "delete single RepairTag detail for single user successfully",
-      data: [],
+      tag: tag,
     });
   } catch (error) {
     console.log(error);
