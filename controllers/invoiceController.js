@@ -86,65 +86,6 @@ exports.deleteSingleInvoiceDetail = async (req, res) => {
 exports.updateInvoice = async (req, res) => {
   try {
     const id = req.params.id;
-
-    // if (
-    //   invoiceData.services ||
-    //   invoiceData.spareParts ||
-    //   invoiceData.selectPackage
-    // ) {
-    //   for (const itemType of ["services", "spareParts", "selectPackage"]) {
-    //     if (invoiceData[itemType]) {
-    //       for (const item of invoiceData[itemType]) {
-    //         const itemId = mongoose.Types.ObjectId(item._id);
-    //         delete item._id; // Remove _id to avoid circular reference
-    //         await Invoice.updateOne(
-    //           { _id: id },
-    //           { $push: { [itemType]: { $each: [{ _id: itemId, ...item }] } } }
-    //         );
-    //       }
-    //     }
-    //   }
-
-    //   const updatedInvoice = await Invoice.findById(id);
-    //   res.status(200).json({
-    //     success: true,
-    //     message: "Invoice updated successfully.",
-    //     data: updatedInvoice,
-    //   });
-    // } else if (
-    //   invoiceData.servicesId ||
-    //   invoiceData.sparePartsId ||
-    //   invoiceData.selectPackageId
-    // ) {
-    //   for (const itemType of ["services", "spareParts", "selectPackage"]) {
-    //     if (invoiceData[`${itemType}Id`]) {
-    //       const updateField = `${itemType}.$`;
-
-    //       await Invoice.updateOne(
-    //         { [`${itemType}._id`]: invoiceData[`${itemType}Id`] },
-    //         {
-    //           $set: {
-    //             [updateField]: {
-    //               [`${itemType}.Name`]: invoiceData[`${itemType}.Name`],
-    //               price: invoiceData.price,
-    //               tax: invoiceData.tax,
-    //               Quantity: invoiceData.Quantity,
-    //               discount: invoiceData.discount,
-    //               total: invoiceData.total,
-    //             },
-    //           },
-    //         }
-    //       );
-    //     }
-    //   }
-
-    //   const updatedInvoice = await Invoice.findById(id);
-    //   res.status(200).json({
-    //     success: true,
-    //     message: "Invoice updated successfully.",
-    //     data: updatedInvoice,
-    //   });
-    // } else {
     await Invoice.findByIdAndUpdate(id, req.body, {
       new: true,
       runValidators: true,
@@ -251,8 +192,16 @@ exports.allInvoiceforSingleUser = async (req, res) => {
 
 exports.getStatusWiseInvoiceForSingleUser = async (req, res) => {
   try {
+    const query = {};
+    if (req.body.createdAt) {
+      query.createdAt = {
+        $gte: new Date(startDate),
+        $lte: new Date(endDate),
+      };
+    }
     const userId = req.params.id;
     const data = await Invoice.find({
+      query,
       userId: userId,
       status: req.body.status,
     }).sort({ createdAt: -1 });
